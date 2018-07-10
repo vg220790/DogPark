@@ -44,6 +44,7 @@ public class UserDataActivity extends AppCompatActivity {
             public void onClick(View view) {
                 UserData newUserData = makeNewUserData(uNameET, dNameET, dSizeRG
                 , friendlyCB, playfulCB, goodWithPeopleCB);
+                addUserToFireBase(newUserData);
             }
         });
     }
