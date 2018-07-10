@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "572484197654-r5loib3vduotkevi5uh7r38sp1n68ds8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.finalproject.dogplay",
+            "certificate_hash": "cca4b099fcf8c73495972edbf2bb2eed36509540"
+          }
+        },
+        {
           "client_id": "572484197654-6mlkpcpt8l7avpsc9jdmnum7ipjjfvt1.apps.googleusercontent.com",
           "client_type": 3
         }

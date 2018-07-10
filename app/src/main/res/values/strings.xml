@@ -14,4 +14,19 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Strings related to user data -->
+    <string name="user_data">Add User Data </string>
+    <string name="user_name">Your Name: </string>
+    <string name="dog_name">Dog\'s Name: </string>
+    <string name="dog_size">Dog\'s Size</string>
+    <string name="small">Small</string>
+    <string name="medium">Medium</string>
+    <string name="big">Big</string>
+    <string name="attributes">Check Your dog\'s attributes</string>
+    <string name="friendly">Friendly</string>
+    <string name="playful">Playful</string>
+    <string name="gWithPeople">Good with people</string>
+    <string name="registration_complete">New user data added</string>
+
 </resources>
