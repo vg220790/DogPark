@@ -13,7 +13,7 @@ public class UserData {
     //list of dog friends
     private ArrayList<String> dFriends;
     //list of dog our dog don't like
-    private ArrayList<String>  dEnemey;
+    private ArrayList<String>  dEnemy;
 
     public String getuName() {
         return uName;
@@ -47,15 +47,32 @@ public class UserData {
         this.dFriends = dFriends;
     }
 
-    public ArrayList<String> getdEnemey() {
-        return dEnemey;
+    public ArrayList<String> getdEnemy() {
+        return dEnemy;
     }
 
-    public void setdEnemey(ArrayList<String> dEnemey) {
-        this.dEnemey = dEnemey;
+    public void setdEnemy(ArrayList<String> dEnemy) {
+        this.dEnemy = dEnemy;
+    }
+
+    public void addFriend(String friendUser){
+        dFriends.add(friendUser);
+    }
+
+    public void removeFriend(String friendUser){
+        dEnemy.remove(friendUser);
+    }
+
+    public void addEnemy(String enemyUser){
+        dEnemy.add(enemyUser);
+    }
+
+    public void removeEnemy(String enemyUser){
+        dEnemy.remove(enemyUser);
     }
 
     public UserData(){
-
+        dFriends = new ArrayList<String>();
+        dEnemy = new ArrayList<String>();
     }
 }
