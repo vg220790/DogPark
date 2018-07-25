@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".UserProfileActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="164dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="user_data" />
+
+        <EditText
+            android:id="@+id/uName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="username" />
+
+        <EditText
+            android:id="@+id/dName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="dog name" />
+
+
+        <RadioGroup
+            android:id="@+id/size"
+            android:layout_width="119dp"
+            android:layout_height="wrap_content"
+            android:checkedButton="@+id/medium">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="dog_size" />
+
+            <RadioButton
+                android:id="@+id/small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="small" />
+
+            <RadioButton
+                android:id="@+id/medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="medium" />
+
+            <RadioButton
+                android:id="@+id/big"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="big" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/dogInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="attributes" />
+
+        <CheckBox
+            android:id="@+id/isFriendly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="friendly" />
+
+        <CheckBox
+            android:id="@+id/isPlayful"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="playful" />
+
+        <CheckBox
+            android:id="@+id/isGoodWithPeople"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="gWithPeople" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/filledUserData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="66dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="50dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+</android.support.constraint.ConstraintLayout>
