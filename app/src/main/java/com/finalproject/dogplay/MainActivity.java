@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
@@ -28,17 +30,20 @@ public class MainActivity extends AppCompatActivity {
     String uname = "";
     String dname = "";
 
-    Button userDataBtn, accountSetBtn;
+    Button userDataBtn, accountSetBtn, findPlayground;
     TextView username, dogname, doginfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /////////
+
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         userDataBtn = (Button)findViewById(R.id.update_user_data);
         accountSetBtn = (Button)findViewById(R.id.update_account_settings);
+        findPlayground = (Button)findViewById(R.id.findPlayground);
 
         username = (TextView) findViewById(R.id.username);
         dogname = (TextView) findViewById(R.id.dogname);
@@ -91,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        findPlayground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SearchDogParkActivity.class));
+            }
+        });
+
     }//end of onCreate
 
     public void getCurrentUserProfile(FirebaseUser user){
@@ -124,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showDogDescription(){
         //firstly getting mandatory attribute of dog's size
-        String dogInfo = "size " + currentUserProfile.getdDescription().get(0);
+        String dogInfo = "size: " + currentUserProfile.getdDescription().get(0) + "\n";
 
         for (String attribute: currentUserProfile.getdDescription().subList(1,(currentUserProfile.getdDescription().size()))){
             dogInfo += "\n" + attribute;
@@ -136,25 +148,5 @@ public class MainActivity extends AppCompatActivity {
     public void signOut() {
         auth.signOut();
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        progressBar.setVisibility(View.GONE);
-//    }
-//
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        auth.addAuthStateListener(authListener);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        if (authListener != null) {
-//            auth.removeAuthStateListener(authListener);
-//        }
-//    }
 
 }//end of class

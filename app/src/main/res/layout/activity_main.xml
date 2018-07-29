@@ -77,10 +77,22 @@
             android:textSize="25dp" />
 
         <Button
+            android:id="@+id/findPlayground"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white"
+            android:text="FIND ME A DOGGY PLAYGROUND"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <Button
             android:id="@+id/update_account_settings"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="300dp"
+            android:layout_marginTop="30dp"
             android:background="@null"
             android:text="CHANGE ACCOUNT SETTINGS?"
             android:textAllCaps="false"

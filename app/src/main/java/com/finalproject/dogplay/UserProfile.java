@@ -82,4 +82,13 @@ public class UserProfile {
     public void setdEnemey(ArrayList<String> dEnemey) {
         this.dEnemey = dEnemey;
     }
+
+    @Override
+    public String toString() {
+        String s = getuName() +  " " + getdName() + " ";
+        for (String attribute : dDescription){
+            s += attribute + " ";
+        }
+        return s.substring(0, s.length() - 1); // return a substring to remove only the last space (" ") of the string
+    }
 }
