@@ -14,14 +14,14 @@ import android.util.Log;
 public class BackgroundService extends Service {
 
 
-    private static final String TAG = "BackgroundServices";
+    private static final String TAG = "BackgroundService";
     private boolean isRunning;
     private Context context;
 
     double lat, lon;
 
     private LocationManager mLocationManager = null;
-    private static final int LOCATION_INTERVAL = 10*60*1000;
+    private static final int LOCATION_INTERVAL = 5*60*1000;
     private static final float LOCATION_DISTANCE = 20;
     LocationListener[] mLocationListeners = new LocationListener[] {
             new LocationListener(LocationManager.GPS_PROVIDER),
@@ -35,6 +35,12 @@ public class BackgroundService extends Service {
         this.context = this;
         this.isRunning = false;
         initializeLocationManager();
+
+
+    }
+
+    public Location getLocation(){
+        Location location = null;
         try {
             mLocationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
@@ -48,11 +54,14 @@ public class BackgroundService extends Service {
             mLocationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
                     mLocationListeners[0]);
+            if (mLocationManager != null)
+                location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         } catch (java.lang.SecurityException ex) {
             Log.i(TAG, "fail to request location update, ignore", ex);
         } catch (IllegalArgumentException ex) {
             Log.d(TAG, "gps provider does not exist " + ex.getMessage());
         }
+        return location;
     }
 
     @Override
@@ -107,6 +116,10 @@ public class BackgroundService extends Service {
             lat = location.getLatitude();
             lon = location.getLongitude();
             Log.i(TAG,"Location Changed: " + lat + " " + lon);
+            Intent i = new Intent("location_update");
+            i.putExtra("location",location);
+            sendBroadcast(i);
+
         }
 
         @Override
@@ -129,7 +142,10 @@ public class BackgroundService extends Service {
     private void initializeLocationManager() {
         if (mLocationManager == null) {
             mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+            Location location = getLocation();
+            //Toast.makeText(BackgroundService.this, "" +location, Toast.LENGTH_SHORT).show();
         }
     }
+
 }
 
