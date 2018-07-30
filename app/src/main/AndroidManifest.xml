@@ -12,6 +12,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon_5"
@@ -32,17 +36,13 @@
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".AccountSettingsActivity" />
         <activity android:name=".FirstUserProfileActivity" />
-        <activity android:name=".SearchDogParkActivity"></activity>
+        <activity android:name=".SearchDogParkActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCuGCmdF_6EwjlLGCMUU0bEiMrWtGBwQNI"/>
+            android:value="AIzaSyCuGCmdF_6EwjlLGCMUU0bEiMrWtGBwQNI" />
 
+        <activity android:name=".ViewPlaygroundActivity"></activity>
     </application>
-
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true"
-        />
 
 </manifest>

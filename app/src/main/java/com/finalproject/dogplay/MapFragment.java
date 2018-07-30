@@ -56,7 +56,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
@@ -89,6 +88,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
                 if (!users.equals("")){
                     pgUsers = users.split(",");
+                    numOfPgUsers = pgUsers.length;
                 }
             }
             googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(address + ": " + " users " + numOfPgUsers));
