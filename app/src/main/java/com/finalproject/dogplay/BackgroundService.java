@@ -111,7 +111,7 @@ public class BackgroundService extends Service {
 
         @Override
         public void onLocationChanged(Location location)
-        {
+        {   //each time when the location changes we will notify our main activity
             mLastLocation.set(location);
             lat = location.getLatitude();
             lon = location.getLongitude();
@@ -143,7 +143,7 @@ public class BackgroundService extends Service {
         if (mLocationManager == null) {
             mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             Location location = getLocation();
-            //Toast.makeText(BackgroundService.this, "" +location, Toast.LENGTH_SHORT).show();
+            Log.i(TAG,"Location: " + location);
         }
     }
 
