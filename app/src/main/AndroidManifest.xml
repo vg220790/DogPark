@@ -36,12 +36,12 @@
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".AccountSettingsActivity" />
         <activity android:name=".FirstUserProfileActivity" />
-        <activity android:name=".SearchDogParkActivity"></activity>
+        <activity android:name=".SearchDogParkActivity" />
+        <activity android:name=".ViewPlaygroundActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCuGCmdF_6EwjlLGCMUU0bEiMrWtGBwQNI" />
-
         <service
             android:name=".BackgroundService"
             android:enabled="true"
