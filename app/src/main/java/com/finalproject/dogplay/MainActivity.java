@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -29,17 +30,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.finalproject.dogplay.fragments.ChatFragment;
+
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ActivityCallback{
 
     private ProgressBar progressBar;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
     DatabaseReference databaseUserProfiles;
     UserProfile currentUserProfile;
-    String uname = "";
-    String dname = "";
+
 
     Button userDataBtn, accountSetBtn, findPlayground;
     TextView username, dogname, doginfo;
@@ -108,11 +110,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent userProfileIntent = new Intent(MainActivity.this, UserProfileActivity.class);
-                uname = currentUserProfile.getuName();
-                dname = currentUserProfile.getdName();
                 Bundle extras = new Bundle();
-                extras.putString("EXTRA_USERNAME",uname);
-                extras.putString("EXTRA_DOGNAME",dname);
+                extras.putString("EXTRA_USERNAME",currentUserProfile.getuName());
+                extras.putString("EXTRA_DOGNAME",currentUserProfile.getdName());
                 extras.putStringArrayList("EXTRA_DOGATTRIBUTES",currentUserProfile.getdDescription());
                 userProfileIntent.putExtras(extras);
                 startActivity(userProfileIntent);
@@ -138,6 +138,20 @@ public class MainActivity extends AppCompatActivity {
     }//end of onCreate
 
 
+    @Override
+    public void openChat() {
+        replaceFragment(ChatFragment.newInstance());
+    }
+
+
+    /// Private methods
+
+    private void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
+    }
 
     public void getCurrentUserProfile(FirebaseUser user){
         final String current_userID = user.getUid();
@@ -156,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                     username.setText(currentUserProfile.getuName());
                     dogname.setText(currentUserProfile.getdName());
                     showDogDescription();
+                    //openChat();
                 }
 
             }
@@ -235,6 +250,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public UserProfile getCurrentUserProfile(){
+        return currentUserProfile;
+    }
 
 
 }//end of class
