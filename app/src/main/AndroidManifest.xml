@@ -36,7 +36,7 @@
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".AccountSettingsActivity" />
         <activity android:name=".FirstUserProfileActivity" />
-        <activity android:name=".SearchDogParkActivity"></activity>
+        <activity android:name=".SearchDogParkActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -45,7 +45,8 @@
         <service
             android:name=".BackgroundService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
     </application>
 
 </manifest>
