@@ -43,7 +43,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCuGCmdF_6EwjlLGCMUU0bEiMrWtGBwQNI" />
         <service
-            android:name=".BackgroundService"
+            android:name=".service.BackgroundService"
             android:enabled="true"
             android:exported="true"></service>
     </application>

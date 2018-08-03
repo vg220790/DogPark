@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.ActivityManager;
 
+import com.finalproject.dogplay.service.BackgroundService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,8 +32,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.finalproject.dogplay.fragments.ChatFragment;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements ActivityCallback{
 
@@ -200,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
 
     public void GPSService(){
         /*start gps service*/
-        if(!isRunningService("com.finalproject.dogplay.BackgroundService")) {
+        if(!isRunningService("com.finalproject.dogplay.service.BackgroundService")) {
             if(runtime_permissions()){}
             else{
                 Intent i =new Intent(getApplicationContext(),BackgroundService.class);
