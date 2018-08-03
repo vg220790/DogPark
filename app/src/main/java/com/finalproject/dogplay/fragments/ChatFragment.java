@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.finalproject.dogplay.ActivityCallback;
 import com.finalproject.dogplay.MainActivity;
 import com.finalproject.dogplay.R;
-import com.finalproject.dogplay.UserProfile;
+import com.finalproject.dogplay.models.UserProfile;
 import com.finalproject.dogplay.adapters.ChatAdapter;
 import com.finalproject.dogplay.models.ChatData;
 
