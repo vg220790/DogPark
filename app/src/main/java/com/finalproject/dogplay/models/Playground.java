@@ -1,4 +1,4 @@
-package com.finalproject.dogplay;
+package com.finalproject.dogplay.models;
 
 import java.util.ArrayList;
 

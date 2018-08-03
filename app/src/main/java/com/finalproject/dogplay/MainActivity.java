@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.ActivityManager;
 
+import com.finalproject.dogplay.models.UserProfile;
 import com.finalproject.dogplay.service.BackgroundService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
