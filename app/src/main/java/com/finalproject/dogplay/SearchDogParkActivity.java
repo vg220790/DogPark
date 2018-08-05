@@ -60,31 +60,6 @@ public class SearchDogParkActivity extends AppCompatActivity {
 
     }// end of onCreate
 
-//    @Override
-//    protected void onStart() {
-//
-//        super.onStart();
-//
-//        databasePlaygrounds.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
-//                    Playground playground = playgroundSnapshot.getValue(Playground.class);
-//                    playgrounds.add(playground);
-//                    playgrounds_strList.add(playground.toString());
-//                }
-//                setFragmentBundle();
-//                setListView();
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//    }// end of onStart
-
     public void setFragmentBundle() {
 
         mapFragBundle = new Bundle();
