@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.finalproject.dogplay.models.UserProfile;
+
 import java.util.List;
 
 public class UsersList extends ArrayAdapter<UserProfile> {

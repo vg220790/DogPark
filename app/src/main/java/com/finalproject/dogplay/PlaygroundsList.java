@@ -15,6 +15,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.finalproject.dogplay.models.Playground;
+import com.finalproject.dogplay.models.UserProfile;
+
 import java.util.ArrayList;
 import java.util.List;
 
