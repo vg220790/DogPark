@@ -37,10 +37,13 @@
         <activity android:name=".AccountSettingsActivity" />
         <activity android:name=".FirstUserProfileActivity" />
         <activity android:name=".SearchDogParkActivity" />
+        <activity android:name=".ViewPlaygroundActivity" />
 
+        <!--Vica's api android:value="AIzaSyCuGCmdF_6EwjlLGCMUU0bEiMrWtGBwQNI" -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCuGCmdF_6EwjlLGCMUU0bEiMrWtGBwQNI" />
+            android:value="AIzaSyBBFiKEVldrXLtwY-ssJCDXencvv3BvB68"
+        />
 
         <service
             android:name=".service.BackgroundService"
