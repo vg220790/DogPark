@@ -15,6 +15,10 @@ public class Playground {
 
     }
 
+    public void newChat(){
+
+    }
+
     public Playground(String address, double latitude, double longitude){
         setAddress(address);
         this.latitude = latitude;
