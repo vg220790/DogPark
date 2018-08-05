@@ -5,6 +5,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ListView;
 
 import com.finalproject.dogplay.models.Playground;
 import com.google.firebase.database.DataSnapshot;
@@ -14,23 +18,56 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchDogParkActivity extends AppCompatActivity {
 
     Fragment fragment;
     Bundle mapFragBundle;
+    ListView pg_listview;
+
     DatabaseReference databasePlaygrounds;
-    ArrayList<String> playgrounds;
+    List<Playground> playgrounds;
+    ArrayList<String> playgrounds_strList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_dog_park);
+        pg_listview = (ListView) findViewById(R.id.playgrounds_listView);
 
         databasePlaygrounds = FirebaseDatabase.getInstance().getReference("Playgrounds");
-        playgrounds = new ArrayList<String>();
+        playgrounds = new ArrayList<Playground>();
+        playgrounds_strList = new ArrayList<String>();
 
-        setFragmentBundle();
+        databasePlaygrounds.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
+                    Playground playground = playgroundSnapshot.getValue(Playground.class);
+                    playgrounds.add(playground);
+                    playgrounds_strList.add(playground.toString());
+                }
+                setFragmentBundle();
+                setListView();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }// end of onCreate
+
+    public void setFragmentBundle() {
+
+        mapFragBundle = new Bundle();
+
+        if (!playgrounds_strList.isEmpty()) {
+
+            mapFragBundle.putStringArrayList("EXTRA_PLAYGROUNDS", playgrounds_strList);
+        }
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -43,32 +80,23 @@ public class SearchDogParkActivity extends AppCompatActivity {
         ft.addToBackStack(null);
         ft.commit();
 
+    }
 
-    }// end of onCreate
+    public void setListView() {
 
-    public  void setFragmentBundle(){
-        mapFragBundle = new Bundle();
+        PlaygroundsList adapter = new PlaygroundsList(SearchDogParkActivity.this, playgrounds);
+        pg_listview.setAdapter(adapter);
 
-        databasePlaygrounds.addListenerForSingleValueEvent(new ValueEventListener(){
+        pg_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot profilesSnapshot: dataSnapshot.getChildren()){
-                    Playground playground = profilesSnapshot.getValue(Playground.class);
-                    playgrounds.add(playground.toString());
-                }
-                mapFragBundle.putStringArrayList("EXTRA_PLAYGROUNDS",playgrounds);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selected_pg_name = (playgrounds.get(position)).getAddress();
+                Intent intent = new Intent(SearchDogParkActivity.this, ViewPlaygroundActivity.class);
+                intent.putExtra("EXTRA_SELECTED_PLAYGROUND", selected_pg_name);
+                startActivity(intent);
             }
         });
 
-
-
-        //get from firebase all playgrounds and their users
-        //put in bundle String Array of all data in this format: (Playground1:)"address lat lang [userProfile,userProfile,userProfile]";address lat lang [userProfile]"
     }
 
 } // end of class

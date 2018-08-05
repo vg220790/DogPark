@@ -21,7 +21,7 @@ public class Playground {
     }
 
     public ArrayList<UserProfile> getUsers() {
-        return users;
+        return this.users;
     }
 
     public void setUsers(ArrayList<UserProfile> users) {
