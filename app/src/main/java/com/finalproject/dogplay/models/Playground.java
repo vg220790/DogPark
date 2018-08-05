@@ -9,6 +9,7 @@ public class Playground {
     private String address;
     double longitude;
     double latitude;
+    ChatData playgroundChat;
 
     public Playground(){
 
