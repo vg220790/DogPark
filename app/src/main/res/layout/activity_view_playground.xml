@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ViewPlaygroundActivity">
 
     <TextView
         android:id="@+id/playgroundName_textView"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorAccent"
         android:layout_height="60dp"
         android:textSize="20dp"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimaryDark"
         android:gravity="center"
         android:text="DOG PARK" />
 
+    <ListView
+        android:id="@+id/users_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
 
-</android.support.constraint.ConstraintLayout>
+    </ListView>
+
+
+</LinearLayout>
