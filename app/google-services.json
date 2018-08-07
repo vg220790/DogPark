@@ -23,7 +23,7 @@
           }
         },
         {
-          "client_id": "572484197654-r5loib3vduotkevi5uh7r38sp1n68ds8.apps.googleusercontent.com",
+          "client_id": "572484197654-brnl7p3k4gj21e02pm6t2egpgd7c01je.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.finalproject.dogplay",
@@ -37,7 +37,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC45JUKcMt-kUQli-2NzTzjpRk7lFLnQmI"
+          "current_key": "AIzaSyBAYGZE6WwRN-HgrMEitqDN279VxH_DrXw"
         }
       ],
       "services": {

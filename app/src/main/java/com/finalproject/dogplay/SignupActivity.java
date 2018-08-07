@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import android.util.Log;
+
 public class SignupActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword;
@@ -94,6 +96,7 @@ public class SignupActivity extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
+                                    Log.e("auth", task.getException()+"");
                                 } else {
                                     startActivity(new Intent(SignupActivity.this, FirstUserProfileActivity.class));
                                     finish();
