@@ -1,89 +1,92 @@
 package com.finalproject.dogplay.models;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class UserProfile {
 
-    private String UserID;
-    private String UserEMail;
-    private String UserPassword;
+    private String uID;
+    private String uEMail;
+    private String uPassword;
 
     //user name to be displayed
-    private String UserName;
+    private String uName;
 
     //dog name
-    private String DogName;
+    private String dName;
 
     // dog descriptions: small , big, lazy, etc
-    private ArrayList<String> DogDescription;
+    private ArrayList<String> dDescription;
 
     //list of dog friends
-    private ArrayList<String> DogFriends;
+    private ArrayList<String> dFriends;
 
     //list of dog our dog don't like
-    private ArrayList<String> DogEnemy;
+    private ArrayList<String> dEnemey;
 
     public UserProfile() { }
 
     public UserProfile(String id, String email) {
-        setUserID(id);
-        setUserEMail(email);
+        setuID(id);
+        setuEMail(email);
     }
 
-    public String getUserID() {
-        return UserID;
+    public String getuID() {
+        return uID;
     }
-    public void setUserID(String id) {
-        this.UserID = id;
+    public void setuID(String id) {
+        this.uID = id;
     }
-    public String getUserEMail() {
-        return UserEMail;
+    public String getuEMail() {
+        return uEMail;
     }
-    public void setUserEMail(String eMail) {
-        this.UserEMail = eMail;
+    public void setuEMail(String eMail) {
+        this.uEMail = eMail;
     }
-    public String getUserPassword() {
-        return UserPassword;
+    public String getuPassword() {
+        return uPassword;
     }
-    public void setUserPassword(String password) {
-        this.UserPassword = password;
+    public void setuPassword(String password) {
+        this.uPassword = password;
     }
 
-    public String getUserName() {
-        return UserName;
+    public String getuName() {
+        return uName;
     }
-    public void setUserName(String uName) {
-        this.UserName = uName;
+    public void setuName(String uName) {
+        this.uName = uName;
     }
-    public String getDogName() {
-        return DogName;
+    public String getdName() {
+        return dName;
     }
-    public void setDogName(String dName) {
-        this.DogName = dName;
+    public void setdName(String dName) {
+        this.dName = dName;
     }
-    public ArrayList<String> getDogDescription() {
-        return DogDescription;
+    public ArrayList<String> getdDescription() {
+        return dDescription;
     }
-    public void setDogDescription(ArrayList<String> dDescription) {
-        this.DogDescription = dDescription;
+    public void setdDescription(ArrayList<String> dDescription) {
+        this.dDescription = dDescription;
     }
-    public ArrayList<String> getDogFriends() {
-        return DogFriends;
+    public ArrayList<String> getdFriends() {
+        return dFriends;
     }
-    public void setDogFriends(ArrayList<String> dFriends) {
-        this.DogFriends = dFriends;
+    public void setdFriends(ArrayList<String> dFriends) {
+        this.dFriends = dFriends;
     }
-    public ArrayList<String> getDogEnemy() {
-        return DogEnemy;
+    public ArrayList<String> getdEnemey() {
+        return dEnemey;
     }
-    public void setDogEnemy(ArrayList<String> dEnemey) {
-        this.DogEnemy = dEnemey;
+    public void setdEnemey(ArrayList<String> dEnemey) {
+        this.dEnemey = dEnemey;
     }
 
     @Override
     public String toString() {
-        String s = getUserName() +  " " + getDogName() + " ";
-        for (String attribute : DogDescription){
+        String s = getuName() +  " " + getdName() + " ";
+        for (String attribute : dDescription){
             s += attribute + " ";
         }
         return s.substring(0, s.length() - 1); // return a substring to remove only the last space (" ") of the string

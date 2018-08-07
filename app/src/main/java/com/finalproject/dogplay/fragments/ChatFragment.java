@@ -69,7 +69,7 @@ public class ChatFragment extends Fragment {
         final MainActivity activity = (MainActivity)getActivity();
         setHasOptionsMenu(true);
         UserProfile uf = activity.getCurrentUserProfile();
-        mUsername = uf.getUserName() +":";
+        mUsername = uf.getuName() +":";
 
         setupConnection();
     }

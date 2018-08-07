@@ -108,17 +108,17 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 for (DataSnapshot profilesSnapshot : dataSnapshot.getChildren()) {
                     UserProfile userProfile = profilesSnapshot.getValue(UserProfile.class);
-                    String id = userProfile.getUserID();
-                    if (userProfile.getUserID().equals(current_userID)) {
+                    String id = userProfile.getuID();
+                    if (userProfile.getuID().equals(current_userID)) {
                         currentUserProfile = userProfile;
                     }
 
-                    currentUserProfile.setUserName(username);
-                    currentUserProfile.setDogName(dogname);
-                    currentUserProfile.setDogDescription(dogDescription(dSizeRG,friendlyCB,playfulCB, goodWithPeopleCB));
+                    currentUserProfile.setuName(username);
+                    currentUserProfile.setdName(dogname);
+                    currentUserProfile.setdDescription(dogDescription(dSizeRG,friendlyCB,playfulCB, goodWithPeopleCB));
 
 
-                    databaseUserProfiles.child(currentUserProfile.getUserID()).setValue(currentUserProfile);
+                    databaseUserProfiles.child(currentUserProfile.getuID()).setValue(currentUserProfile);
                     Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();
                     startActivity(intentToMain);
                 }
@@ -137,7 +137,7 @@ public class UserProfileActivity extends AppCompatActivity {
                                                 CheckBox friendlyCB, CheckBox playfulCB,
                                                 CheckBox goodWithPeopleCB){
 
-        ArrayList<String> dDescription = currentUserProfile.getDogDescription();
+        ArrayList<String> dDescription = currentUserProfile.getdDescription();
         dDescription.clear();
         //dog size
         dDescription.add(((RadioButton)findViewById(dSizeRG.getCheckedRadioButtonId()))

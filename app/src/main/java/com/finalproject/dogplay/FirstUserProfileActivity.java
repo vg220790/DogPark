@@ -93,12 +93,12 @@ public class FirstUserProfileActivity extends AppCompatActivity {
 
         UserProfile newUserProfile = new UserProfile(current_userID, email);
 
-        newUserProfile.setUserName(uName);
-        newUserProfile.setDogName(dName);
+        newUserProfile.setuName(uName);
+        newUserProfile.setdName(dName);
 
         ArrayList<String> dDescription = dogDescription(dSizeRG,
                 friendlyCB, playfulCB, goodWithPeopleCB);
-        newUserProfile.setDogDescription(dDescription);
+        newUserProfile.setdDescription(dDescription);
 
         return newUserProfile;
 
@@ -126,7 +126,7 @@ public class FirstUserProfileActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                databaseUserProfiles.child(newUserProfile.getUserID()).setValue(newUserProfile);
+                databaseUserProfiles.child(newUserProfile.getuID()).setValue(newUserProfile);
                 Toast.makeText(getApplicationContext(),R.string.registration_complete, Toast.LENGTH_LONG).show();
                 startActivity(intentToMain);
             }

@@ -111,9 +111,9 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
             public void onClick(View v) {
                 Intent userProfileIntent = new Intent(MainActivity.this, UserProfileActivity.class);
                 Bundle extras = new Bundle();
-                extras.putString("EXTRA_USERNAME",currentUserProfile.getUserName());
-                extras.putString("EXTRA_DOGNAME",currentUserProfile.getDogName());
-                extras.putStringArrayList("EXTRA_DOGATTRIBUTES",currentUserProfile.getDogDescription());
+                extras.putString("EXTRA_USERNAME",currentUserProfile.getuName());
+                extras.putString("EXTRA_DOGNAME",currentUserProfile.getdName());
+                extras.putStringArrayList("EXTRA_DOGATTRIBUTES",currentUserProfile.getdDescription());
                 userProfileIntent.putExtras(extras);
                 startActivity(userProfileIntent);
 
@@ -160,15 +160,15 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot profilesSnapshot: dataSnapshot.getChildren()){
                     UserProfile userProfile = profilesSnapshot.getValue(UserProfile.class);
-                    if (userProfile.getUserID().equals(current_userID))
+                    if (userProfile.getuID().equals(current_userID))
                         currentUserProfile = userProfile;
                 }
                 if (currentUserProfile == null){
                     //start UserProfile Activity
                     startActivity(new Intent(MainActivity.this, FirstUserProfileActivity.class));
                 }else{
-                    username.setText(currentUserProfile.getUserName());
-                    dogName.setText(currentUserProfile.getDogName());
+                    username.setText(currentUserProfile.getuName());
+                    dogName.setText(currentUserProfile.getdName());
                     showDogDescription();
                     //openChat();
                 }
@@ -185,9 +185,9 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
 
     public void showDogDescription(){
         //firstly getting mandatory attribute of dog's size
-        String dogInfo = "size: " + currentUserProfile.getDogDescription().get(0) + "\n";
+        String dogInfo = "size: " + currentUserProfile.getdDescription().get(0) + "\n";
 
-        for (String attribute: currentUserProfile.getDogDescription().subList(1,(currentUserProfile.getDogDescription().size()))){
+        for (String attribute: currentUserProfile.getdDescription().subList(1,(currentUserProfile.getdDescription().size()))){
             dogInfo += "\n" + attribute;
         }
         this.dogInfo.setText(dogInfo);

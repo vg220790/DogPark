@@ -114,8 +114,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        currentUserProfile.setUserEMail(newEmail.getText().toString().trim());
-                                        databaseUserProfiles.child(currentUserProfile.getUserID()).setValue(currentUserProfile);
+                                        currentUserProfile.setuEMail(newEmail.getText().toString().trim());
+                                        databaseUserProfiles.child(currentUserProfile.getuID()).setValue(currentUserProfile);
                                         Toast.makeText(AccountSettingsActivity.this, "Email address is updated. Please sign in with new email id!", Toast.LENGTH_LONG).show();
                                         signOut();
                                         progressBar.setVisibility(View.GONE);
@@ -160,8 +160,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            currentUserProfile.setUserPassword(newPassword.getText().toString().trim());
-                                            databaseUserProfiles.child(currentUserProfile.getUserID()).setValue(currentUserProfile);
+                                            currentUserProfile.setuPassword(newPassword.getText().toString().trim());
+                                            databaseUserProfiles.child(currentUserProfile.getuID()).setValue(currentUserProfile);
                                             Toast.makeText(AccountSettingsActivity.this, "Password is updated, sign in with new password!", Toast.LENGTH_SHORT).show();
                                             signOut();
                                             progressBar.setVisibility(View.GONE);
@@ -262,7 +262,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot profilesSnapshot: dataSnapshot.getChildren()){
                     UserProfile userProfile = profilesSnapshot.getValue(UserProfile.class);
-                    if (userProfile.getUserID().equals(current_userID))
+                    if (userProfile.getuID().equals(current_userID))
                         currentUserProfile = userProfile;
                 }
 
