@@ -1,7 +1,5 @@
 package com.finalproject.dogplay.models;
 
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -24,7 +22,7 @@ public class UserProfile {
     private ArrayList<String> dFriends;
 
     //list of dog our dog don't like
-    private ArrayList<String> dEnemey;
+    private ArrayList<String> dEnemy;
 
     public UserProfile() { }
 
@@ -76,18 +74,18 @@ public class UserProfile {
     public void setdFriends(ArrayList<String> dFriends) {
         this.dFriends = dFriends;
     }
-    public ArrayList<String> getdEnemey() {
-        return dEnemey;
+    public ArrayList<String> getdEnemy() {
+        return dEnemy;
     }
-    public void setdEnemey(ArrayList<String> dEnemey) {
-        this.dEnemey = dEnemey;
+    public void setdEnemy(ArrayList<String> dEnemy) {
+        this.dEnemy = dEnemy;
     }
 
     @Override
     public String toString() {
-        String s = getuName() +  " " + getdName() + " ";
+        StringBuilder s = new StringBuilder(getuName() +  " " + getdName() + " ");
         for (String attribute : dDescription){
-            s += attribute + " ";
+            s.append(attribute).append(" ");
         }
         return s.substring(0, s.length() - 1); // return a substring to remove only the last space (" ") of the string
     }
