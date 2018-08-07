@@ -46,14 +46,16 @@ public class Playground {
     }
 
     public String toString(){
-        String s = this.getAddress() + "-" + this.latitude + "-" + this.longitude;
+        String toReturn = this.getAddress() + "-" + this.latitude + "-" + this.longitude;
+        String usersString =  "";
         if (!users.isEmpty()){
-            s += "-[";
+            StringBuilder s = new StringBuilder();
+            s.append("-[");
             for (UserProfile userProfile: users){
-                s += userProfile.toString() + ",";
+                s.append( userProfile.toString()).append(",");
             }
-            s = s.substring(0, s.length() - 1) + "]"; //remove last "," from users string array
+            usersString = s.substring(0, s.length() - 1) + "]"; //remove last "," from users string array
         }
-        return s;
+        return toReturn + usersString;
     }
 }
