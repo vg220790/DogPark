@@ -26,7 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 public class FirstUserProfileActivity extends AppCompatActivity {
 
     private Intent intentToMain;
-    private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
     DatabaseReference databaseUserProfiles;
 
@@ -94,12 +93,12 @@ public class FirstUserProfileActivity extends AppCompatActivity {
 
         UserProfile newUserProfile = new UserProfile(current_userID, email);
 
-        newUserProfile.setuName(uName);
-        newUserProfile.setdName(dName);
+        newUserProfile.setUserName(uName);
+        newUserProfile.setDogName(dName);
 
         ArrayList<String> dDescription = dogDescription(dSizeRG,
                 friendlyCB, playfulCB, goodWithPeopleCB);
-        newUserProfile.setdDescription(dDescription);
+        newUserProfile.setDogDescription(dDescription);
 
         return newUserProfile;
 
@@ -127,9 +126,7 @@ public class FirstUserProfileActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-//                database.child("UserProfiles").push().setValue(newUserProfile);
-                databaseUserProfiles.child(newUserProfile.getuID()).setValue(newUserProfile);
+                databaseUserProfiles.child(newUserProfile.getUserID()).setValue(newUserProfile);
                 Toast.makeText(getApplicationContext(),R.string.registration_complete, Toast.LENGTH_LONG).show();
                 startActivity(intentToMain);
             }

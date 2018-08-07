@@ -26,14 +26,14 @@ import com.google.firebase.database.ValueEventListener;
 public class UserProfileActivity extends AppCompatActivity {
 
     private Intent intentToMain;
-    private FirebaseAuth.AuthStateListener authListener;
+    //private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
     DatabaseReference databaseUserProfiles;
     UserProfile currentUserProfile;
 
-    String uname = "";
-    String dname = "";
-    ArrayList<String> dAtbs;
+    String userName = "";
+    String dogName = "";
+    ArrayList<String> dogAttributes;
 
     EditText uNameET, dNameET;
     RadioGroup dSizeRG;
@@ -46,21 +46,21 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
-        databaseUserProfiles = FirebaseDatabase.getInstance().getReference("UserProfiles");
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        uNameET = findViewById(R.id.uName);
-        dNameET = findViewById(R.id.dName);
-        dSizeRG = findViewById(R.id.size);
-        friendlyCB = findViewById(R.id.isFriendly);
-        playfulCB = findViewById(R.id.isPlayful);
-        goodWithPeopleCB = findViewById(R.id.isGoodWithPeople);
-        confirmButton = findViewById(R.id.filledUserData);
+        auth                    = FirebaseAuth.getInstance();
+        databaseUserProfiles    = FirebaseDatabase.getInstance().getReference("UserProfiles");
+        //final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        uNameET                 = findViewById(R.id.uName);
+        dNameET                 = findViewById(R.id.dName);
+        dSizeRG                 = findViewById(R.id.size);
+        friendlyCB              = findViewById(R.id.isFriendly);
+        playfulCB               = findViewById(R.id.isPlayful);
+        goodWithPeopleCB        = findViewById(R.id.isGoodWithPeople);
+        confirmButton           = findViewById(R.id.filledUserData);
 
         Bundle extras = getIntent().getExtras();
-        uname = extras.getString("EXTRA_USERNAME");
-        dname = extras.getString("EXTRA_DOGNAME");
-        dAtbs = extras.getStringArrayList("EXTRA_DOGATTRIBUTES");
+        userName = extras.getString("EXTRA_USERNAME");
+        dogName = extras.getString("EXTRA_DOGNAME");
+        dogAttributes = extras.getStringArrayList("EXTRA_DOGATTRIBUTES");
         showCurrentUserData();
 
         intentToMain = new Intent(this,MainActivity.class);
@@ -108,17 +108,17 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 for (DataSnapshot profilesSnapshot : dataSnapshot.getChildren()) {
                     UserProfile userProfile = profilesSnapshot.getValue(UserProfile.class);
-                    String id = userProfile.getuID();
-                    if (userProfile.getuID().equals(current_userID)) {
+                    String id = userProfile.getUserID();
+                    if (userProfile.getUserID().equals(current_userID)) {
                         currentUserProfile = userProfile;
                     }
 
-                    currentUserProfile.setuName(username);
-                    currentUserProfile.setdName(dogname);
-                    currentUserProfile.setdDescription(dogDescription(dSizeRG,friendlyCB,playfulCB, goodWithPeopleCB));
+                    currentUserProfile.setUserName(username);
+                    currentUserProfile.setDogName(dogname);
+                    currentUserProfile.setDogDescription(dogDescription(dSizeRG,friendlyCB,playfulCB, goodWithPeopleCB));
 
 
-                    databaseUserProfiles.child(currentUserProfile.getuID()).setValue(currentUserProfile);
+                    databaseUserProfiles.child(currentUserProfile.getUserID()).setValue(currentUserProfile);
                     Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();
                     startActivity(intentToMain);
                 }
@@ -137,7 +137,7 @@ public class UserProfileActivity extends AppCompatActivity {
                                                 CheckBox friendlyCB, CheckBox playfulCB,
                                                 CheckBox goodWithPeopleCB){
 
-        ArrayList<String> dDescription = currentUserProfile.getdDescription();
+        ArrayList<String> dDescription = currentUserProfile.getDogDescription();
         dDescription.clear();
         //dog size
         dDescription.add(((RadioButton)findViewById(dSizeRG.getCheckedRadioButtonId()))
@@ -152,7 +152,7 @@ public class UserProfileActivity extends AppCompatActivity {
         return  dDescription;
     }
 
-
+/*
     protected void setCurrentUserProfile(final FirebaseUser user){
         final String current_userID = user.getUid();
 
@@ -184,11 +184,11 @@ public class UserProfileActivity extends AppCompatActivity {
         dNameET.setText(dname);
 
         if (currentUserProfile.getdDescription().contains("small"))
-            ((RadioButton)findViewById(R.id.small)).setSelected(true);
+            (findViewById(R.id.small)).setSelected(true);
         else if (currentUserProfile.getdDescription().contains("medium"))
-            ((RadioButton)findViewById(R.id.medium)).setSelected(true);
+            (findViewById(R.id.medium)).setSelected(true);
         else if (currentUserProfile.getdDescription().contains("big"))
-            ((RadioButton)findViewById(R.id.big)).setSelected(true);
+            (findViewById(R.id.big)).setSelected(true);
 
         if (currentUserProfile.getdDescription().contains("friendly"))
             friendlyCB.setChecked(true);
@@ -199,23 +199,24 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
     }
+ */
 
     public void showCurrentUserData(){
-        uNameET.setText(uname);
-        dNameET.setText(dname);
+        uNameET.setText(userName);
+        dNameET.setText(dogName);
 
-        if (dAtbs.contains("small"))
-            ((RadioButton)findViewById(R.id.small)).setSelected(true);
-        else if (dAtbs.contains("medium"))
-            ((RadioButton)findViewById(R.id.medium)).setSelected(true);
-        else if (dAtbs.contains("big"))
-            ((RadioButton)findViewById(R.id.big)).setSelected(true);
+        if (dogAttributes.contains("small"))
+            (findViewById(R.id.small)).setSelected(true);
+        else if (dogAttributes.contains("medium"))
+            (findViewById(R.id.medium)).setSelected(true);
+        else if (dogAttributes.contains("big"))
+            (findViewById(R.id.big)).setSelected(true);
 
-        if (dAtbs.contains("friendly"))
+        if (dogAttributes.contains("friendly"))
             friendlyCB.setChecked(true);
-        if (dAtbs.contains("playful"))
+        if (dogAttributes.contains("playful"))
             playfulCB.setChecked(true);
-        if (dAtbs.contains("gWithPeople"))
+        if (dogAttributes.contains("gWithPeople"))
             goodWithPeopleCB.setChecked(true);
     }
 }

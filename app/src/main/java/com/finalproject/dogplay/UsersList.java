@@ -1,7 +1,6 @@
 package com.finalproject.dogplay;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,11 +28,11 @@ public class UsersList extends ArrayAdapter<UserProfile> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
 
-        View listViewItem = inflater.inflate(R.layout.users_listview_layout, null, true);
+        View listViewItem       = inflater.inflate(R.layout.users_listview_layout, null, true);
 
-        TextView playgroundUser = (TextView) listViewItem.findViewById(R.id.userprofile_textview);
+        TextView playgroundUser = listViewItem.findViewById(R.id.userprofile_textview);
 
-        UserProfile user = users.get(position);
+        UserProfile user        = users.get(position);
 
         playgroundUser.setText(user.toString());
 

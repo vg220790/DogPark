@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Playground {
 
-    private ArrayList<UserProfile> users = new ArrayList<UserProfile>();
+    private ArrayList<UserProfile> users = new ArrayList<>();
     private String name;
     private String address;
-    double longitude;
-    double latitude;
+    private double longitude;
+    private double latitude;
     ChatData playgroundChat;
 
     public Playground(){

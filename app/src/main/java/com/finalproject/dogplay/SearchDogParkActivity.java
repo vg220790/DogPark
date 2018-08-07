@@ -8,9 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
+import com.finalproject.dogplay.adapters.PlaygroundsList;
+import com.finalproject.dogplay.fragments.MapFragment;
 import com.finalproject.dogplay.models.Playground;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,21 +26,21 @@ public class SearchDogParkActivity extends AppCompatActivity {
 
     Fragment fragment;
     Bundle mapFragBundle;
-    ListView pg_listview;
+    ListView playgroundsListView;
 
     DatabaseReference databasePlaygrounds;
     List<Playground> playgrounds;
-    ArrayList<String> playgrounds_strList;
+    ArrayList<String> playgroundsStrList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_dog_park);
-        pg_listview = (ListView) findViewById(R.id.playgrounds_listView);
+        playgroundsListView = findViewById(R.id.playgrounds_listView);
 
         databasePlaygrounds = FirebaseDatabase.getInstance().getReference("Playgrounds");
-        playgrounds = new ArrayList<Playground>();
-        playgrounds_strList = new ArrayList<String>();
+        playgrounds = new ArrayList<>();
+        playgroundsStrList = new ArrayList<>();
 
         databasePlaygrounds.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -47,7 +48,7 @@ public class SearchDogParkActivity extends AppCompatActivity {
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
                     Playground playground = playgroundSnapshot.getValue(Playground.class);
                     playgrounds.add(playground);
-                    playgrounds_strList.add(playground.toString());
+                    playgroundsStrList.add(playground.toString());
                 }
                 setFragmentBundle();
                 setListView();
@@ -65,9 +66,9 @@ public class SearchDogParkActivity extends AppCompatActivity {
 
         mapFragBundle = new Bundle();
 
-        if (!playgrounds_strList.isEmpty()) {
+        if (!playgroundsStrList.isEmpty()) {
 
-            mapFragBundle.putStringArrayList("EXTRA_PLAYGROUNDS", playgrounds_strList);
+            mapFragBundle.putStringArrayList("EXTRA_PLAYGROUNDS", playgroundsStrList);
         }
 
         FragmentManager fm = getSupportFragmentManager();
@@ -86,9 +87,9 @@ public class SearchDogParkActivity extends AppCompatActivity {
     public void setListView() {
 
         PlaygroundsList adapter = new PlaygroundsList(SearchDogParkActivity.this, playgrounds);
-        pg_listview.setAdapter(adapter);
+        playgroundsListView.setAdapter(adapter);
 
-        pg_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        playgroundsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selected_pg_name = (playgrounds.get(position)).getAddress();

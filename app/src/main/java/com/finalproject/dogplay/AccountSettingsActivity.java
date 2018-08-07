@@ -60,20 +60,20 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
         getCurrentUserProfile(user);
 
-        btnChangeEmail = (Button) findViewById(R.id.change_email_button);
-        btnChangePassword = (Button) findViewById(R.id.change_password_button);
-        btnSendResetEmail = (Button) findViewById(R.id.sending_pass_reset_button);
-        btnRemoveUser = (Button) findViewById(R.id.remove_user_button);
-        changeEmail = (Button) findViewById(R.id.changeEmail);
-        changePassword = (Button) findViewById(R.id.changePass);
-        sendEmail = (Button) findViewById(R.id.send);
-        remove = (Button) findViewById(R.id.remove);
-        signOut = (Button) findViewById(R.id.sign_out);
+        btnChangeEmail      = findViewById(R.id.change_email_button);
+        btnChangePassword   = findViewById(R.id.change_password_button);
+        btnSendResetEmail   = findViewById(R.id.sending_pass_reset_button);
+        btnRemoveUser       = findViewById(R.id.remove_user_button);
+        changeEmail         = findViewById(R.id.changeEmail);
+        changePassword      = findViewById(R.id.changePass);
+        sendEmail           = findViewById(R.id.send);
+        remove              = findViewById(R.id.remove);
+        signOut             = findViewById(R.id.sign_out);
 
-        oldEmail = (EditText) findViewById(R.id.old_email);
-        newEmail = (EditText) findViewById(R.id.new_email);
-        password = (EditText) findViewById(R.id.password);
-        newPassword = (EditText) findViewById(R.id.newPassword);
+        oldEmail            = findViewById(R.id.old_email);
+        newEmail            = findViewById(R.id.new_email);
+        password            = findViewById(R.id.password);
+        newPassword         = findViewById(R.id.newPassword);
 
         oldEmail.setVisibility(View.GONE);
         newEmail.setVisibility(View.GONE);
@@ -84,7 +84,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         sendEmail.setVisibility(View.GONE);
         remove.setVisibility(View.GONE);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
 
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
@@ -114,8 +114,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        currentUserProfile.setuEMail(newEmail.getText().toString().trim());
-                                        databaseUserProfiles.child(currentUserProfile.getuID()).setValue(currentUserProfile);
+                                        currentUserProfile.setUserEMail(newEmail.getText().toString().trim());
+                                        databaseUserProfiles.child(currentUserProfile.getUserID()).setValue(currentUserProfile);
                                         Toast.makeText(AccountSettingsActivity.this, "Email address is updated. Please sign in with new email id!", Toast.LENGTH_LONG).show();
                                         signOut();
                                         progressBar.setVisibility(View.GONE);
@@ -160,8 +160,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            currentUserProfile.setuPassword(newPassword.getText().toString().trim());
-                                            databaseUserProfiles.child(currentUserProfile.getuID()).setValue(currentUserProfile);
+                                            currentUserProfile.setUserPassword(newPassword.getText().toString().trim());
+                                            databaseUserProfiles.child(currentUserProfile.getUserID()).setValue(currentUserProfile);
                                             Toast.makeText(AccountSettingsActivity.this, "Password is updated, sign in with new password!", Toast.LENGTH_SHORT).show();
                                             signOut();
                                             progressBar.setVisibility(View.GONE);
@@ -262,7 +262,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot profilesSnapshot: dataSnapshot.getChildren()){
                     UserProfile userProfile = profilesSnapshot.getValue(UserProfile.class);
-                    if (userProfile.getuID().equals(current_userID))
+                    if (userProfile.getUserID().equals(current_userID))
                         currentUserProfile = userProfile;
                 }
 

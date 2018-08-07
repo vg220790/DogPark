@@ -1,6 +1,5 @@
 package com.finalproject.dogplay;
 
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -15,16 +14,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ViewPlaygroundActivity extends AppCompatActivity {
 
-    TextView playgroundName_TextView;
-    String playgroundName;
-    Playground current_playground;
-    ListView users_listview;
-    ArrayList<UserProfile> usersList;
-    DatabaseReference databasePlaygrounds;
+    TextView                playgroundNameTextView;
+    String                  playgroundName;
+    Playground              currentPlayground;
+    ListView                usersListView;
+    ArrayList<UserProfile>  usersList;
+    DatabaseReference       databasePlaygrounds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +33,12 @@ public class ViewPlaygroundActivity extends AppCompatActivity {
 
         playgroundName = getIntent().getStringExtra("EXTRA_SELECTED_PLAYGROUND");
 
-        playgroundName_TextView = (TextView) findViewById(R.id.playgroundName_textView);
-        playgroundName_TextView.setText(playgroundName);
+        playgroundNameTextView = findViewById(R.id.playgroundName_textView);
+        playgroundNameTextView.setText(playgroundName);
 
-        users_listview = (ListView) findViewById(R.id.users_listview);
+        usersListView = findViewById(R.id.users_listview);
 
-        usersList = new ArrayList<UserProfile>();
+        usersList = new ArrayList<>();
 
         databasePlaygrounds.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -48,7 +46,7 @@ public class ViewPlaygroundActivity extends AppCompatActivity {
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
                     Playground playground = playgroundSnapshot.getValue(Playground.class);
                     if (playground.getAddress().equals(playgroundName)) {
-                        current_playground = playground;
+                        currentPlayground = playground;
                         usersList.addAll(playground.getUsers());
                     }
                 }
@@ -64,6 +62,6 @@ public class ViewPlaygroundActivity extends AppCompatActivity {
 
     protected void setUsersListView(ArrayList<UserProfile> usersList) {
         UsersList adapter = new UsersList(ViewPlaygroundActivity.this, usersList);
-        users_listview.setAdapter(adapter);
+        usersListView.setAdapter(adapter);
     }
 }
