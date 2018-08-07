@@ -15,7 +15,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -24,10 +23,8 @@ import android.util.Log;
 public class SignupActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword;
-    private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
-    DatabaseReference databaseUserProfiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +34,14 @@ public class SignupActivity extends AppCompatActivity {
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
-        databaseUserProfiles = FirebaseDatabase.getInstance().getReference("UserProfiles");
+        DatabaseReference databaseUserProfiles = FirebaseDatabase.getInstance().getReference("UserProfiles");
 
-        btnSignIn           = findViewById(R.id.sign_in_button);
-        btnSignUp           = findViewById(R.id.sign_up_button);
+        Button btnSignIn = findViewById(R.id.sign_in_button);
+        Button btnSignUp = findViewById(R.id.sign_up_button);
         inputEmail          = findViewById(R.id.email);
         inputPassword       = findViewById(R.id.password);
         progressBar         = findViewById(R.id.progressBar);
-        btnResetPassword    = findViewById(R.id.btn_reset_password);
+        Button btnResetPassword = findViewById(R.id.btn_reset_password);
 
         btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override

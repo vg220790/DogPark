@@ -21,17 +21,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class AccountSettingsActivity extends AppCompatActivity {
 
-    private Button btnChangeEmail, btnChangePassword, btnSendResetEmail, btnRemoveUser,
-            changeEmail, changePassword, sendEmail, remove, signOut;
+    private Button changeEmail;
+    private Button changePassword;
+    private Button sendEmail;
+    private Button remove;
 
     private EditText oldEmail, newEmail, password, newPassword;
     private ProgressBar progressBar;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
-    DatabaseReference databaseUserProfiles;
-    UserProfile currentUserProfile;
+    private DatabaseReference databaseUserProfiles;
+    private UserProfile currentUserProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +64,15 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
         getCurrentUserProfile(user);
 
-        btnChangeEmail      = findViewById(R.id.change_email_button);
-        btnChangePassword   = findViewById(R.id.change_password_button);
-        btnSendResetEmail   = findViewById(R.id.sending_pass_reset_button);
-        btnRemoveUser       = findViewById(R.id.remove_user_button);
+        Button btnChangeEmail = findViewById(R.id.change_email_button);
+        Button btnChangePassword = findViewById(R.id.change_password_button);
+        Button btnSendResetEmail = findViewById(R.id.sending_pass_reset_button);
+        Button btnRemoveUser = findViewById(R.id.remove_user_button);
         changeEmail         = findViewById(R.id.changeEmail);
         changePassword      = findViewById(R.id.changePass);
         sendEmail           = findViewById(R.id.send);
         remove              = findViewById(R.id.remove);
-        signOut             = findViewById(R.id.sign_out);
+        Button signOut = findViewById(R.id.sign_out);
 
         oldEmail            = findViewById(R.id.old_email);
         newEmail            = findViewById(R.id.new_email);
@@ -262,7 +266,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot profilesSnapshot: dataSnapshot.getChildren()){
                     UserProfile userProfile = profilesSnapshot.getValue(UserProfile.class);
-                    if (userProfile.getuID().equals(current_userID))
+                    if (Objects.requireNonNull(userProfile).getuID().equals(current_userID))
                         currentUserProfile = userProfile;
                 }
 

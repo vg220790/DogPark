@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import com.finalproject.dogplay.models.UserProfile;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,19 +27,16 @@ import com.google.firebase.database.ValueEventListener;
 public class UserProfileActivity extends AppCompatActivity {
 
     private Intent intentToMain;
-    //private FirebaseAuth.AuthStateListener authListener;
-    private FirebaseAuth auth;
-    DatabaseReference databaseUserProfiles;
-    UserProfile currentUserProfile;
+    private DatabaseReference databaseUserProfiles;
+    private UserProfile currentUserProfile;
 
-    String userName = "";
-    String dogName = "";
-    ArrayList<String> dogAttributes;
+    private String userName = "";
+    private String dogName = "";
+    private ArrayList<String> dogAttributes;
 
-    EditText uNameET, dNameET;
-    RadioGroup dSizeRG;
-    CheckBox friendlyCB, playfulCB, goodWithPeopleCB;
-    Button confirmButton;
+    private EditText uNameET, dNameET;
+    private RadioGroup dSizeRG;
+    private CheckBox friendlyCB, playfulCB, goodWithPeopleCB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +44,7 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         //Get Firebase auth instance
-        auth                    = FirebaseAuth.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         databaseUserProfiles    = FirebaseDatabase.getInstance().getReference("UserProfiles");
         //final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         uNameET                 = findViewById(R.id.uName);
@@ -55,10 +53,10 @@ public class UserProfileActivity extends AppCompatActivity {
         friendlyCB              = findViewById(R.id.isFriendly);
         playfulCB               = findViewById(R.id.isPlayful);
         goodWithPeopleCB        = findViewById(R.id.isGoodWithPeople);
-        confirmButton           = findViewById(R.id.filledUserData);
+        Button confirmButton = findViewById(R.id.filledUserData);
 
         Bundle extras = getIntent().getExtras();
-        userName = extras.getString("EXTRA_USERNAME");
+        userName = Objects.requireNonNull(extras).getString("EXTRA_USERNAME");
         dogName = extras.getString("EXTRA_DOGNAME");
         dogAttributes = extras.getStringArrayList("EXTRA_DOGATTRIBUTES");
         showCurrentUserData();
@@ -99,7 +97,7 @@ public class UserProfileActivity extends AppCompatActivity {
     public void updateUserData(final String username,final String  dogname,final RadioGroup dSizeRG
             ,final CheckBox friendlyCB,final CheckBox playfulCB,final CheckBox goodWithPeopleCB){
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String current_userID = user.getUid();
+        final String current_userID = Objects.requireNonNull(user).getUid();
 
         databaseUserProfiles.addListenerForSingleValueEvent(new ValueEventListener(){
 
@@ -108,7 +106,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 for (DataSnapshot profilesSnapshot : dataSnapshot.getChildren()) {
                     UserProfile userProfile = profilesSnapshot.getValue(UserProfile.class);
-                    String id = userProfile.getuID();
+                    String id = Objects.requireNonNull(userProfile).getuID();
                     if (userProfile.getuID().equals(current_userID)) {
                         currentUserProfile = userProfile;
                     }

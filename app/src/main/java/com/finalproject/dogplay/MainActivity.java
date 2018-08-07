@@ -34,17 +34,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import com.finalproject.dogplay.fragments.ChatFragment;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity implements ActivityCallback{
 
-    private ProgressBar progressBar;
-    private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
-    DatabaseReference databaseUserProfiles;
-    UserProfile currentUserProfile;
+    private DatabaseReference databaseUserProfiles;
+    private UserProfile currentUserProfile;
 
 
-    Button userDataBtn, accountSetBtn, findPlayground;
-    TextView username, dogName, dogInfo;
+    private TextView username, dogName, dogInfo;
 
     private BroadcastReceiver broadcastReceiver;
     private Location userLocation;
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
             broadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    userLocation = (Location) intent.getExtras().get("location");
+                    userLocation = (Location) Objects.requireNonNull(intent.getExtras()).get("location");
                 }
             };
         }
@@ -72,10 +71,10 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
         /////////
 
 
-        progressBar     = findViewById(R.id.progressBar);
-        userDataBtn     = findViewById(R.id.update_user_data);
-        accountSetBtn   = findViewById(R.id.update_account_settings);
-        findPlayground  = findViewById(R.id.findPlayground);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        Button userDataBtn = findViewById(R.id.update_user_data);
+        Button accountSetBtn = findViewById(R.id.update_account_settings);
+        Button findPlayground = findViewById(R.id.findPlayground);
         username        = findViewById(R.id.username);
         dogName = findViewById(R.id.dogname);
         dogInfo = findViewById(R.id.dogInfo);
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
         auth                    = FirebaseAuth.getInstance();
         databaseUserProfiles    = FirebaseDatabase.getInstance().getReference("UserProfiles");
 
-        authListener = new FirebaseAuth.AuthStateListener() {
+        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -160,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot profilesSnapshot: dataSnapshot.getChildren()){
                     UserProfile userProfile = profilesSnapshot.getValue(UserProfile.class);
-                    if (userProfile.getuID().equals(current_userID))
+                    if (Objects.requireNonNull(userProfile).getuID().equals(current_userID))
                         currentUserProfile = userProfile;
                 }
                 if (currentUserProfile == null){
@@ -185,12 +184,11 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
 
     public void showDogDescription(){
         //firstly getting mandatory attribute of dog's size
-        String dogInfo = "size: " + currentUserProfile.getdDescription().get(0) + "\n";
+        StringBuilder dogsInfo = new StringBuilder("size: " + currentUserProfile.getdDescription().get(0) + "\n");
+        for (String attribute: currentUserProfile.getdDescription().subList(1,(currentUserProfile.getdDescription().size())))
+            dogsInfo.append("\n").append(attribute);
 
-        for (String attribute: currentUserProfile.getdDescription().subList(1,(currentUserProfile.getdDescription().size()))){
-            dogInfo += "\n" + attribute;
-        }
-        this.dogInfo.setText(dogInfo);
+        this.dogInfo.setText(dogsInfo.toString());
     }
 
     //sign out method
@@ -201,8 +199,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
     public void GPSService(){
         /*start gps service*/
         if(!isRunningService("com.finalproject.dogplay.service.BackgroundService")) {
-            if(runtime_permissions()){}
-            else{
+            if(runtime_permissions() == false){
                 Intent i =new Intent(getApplicationContext(),BackgroundService.class);
                 startService(i);
                 Toast.makeText(MainActivity.this, "service started!", Toast.LENGTH_SHORT).show();
@@ -218,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
      */
     public boolean isRunningService(String serviceName){
         ActivityManager manager = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
-        for(ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+        for(ActivityManager.RunningServiceInfo service : Objects.requireNonNull(manager).getRunningServices(Integer.MAX_VALUE)){
             if(serviceName.equals(service.service.getClassName()))
                 return true;
         }

@@ -21,11 +21,7 @@ import java.util.ArrayList;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
-    GoogleMap mGoogleMap;
-    MapView   mMapView;
-    View      mView;
-
-    ArrayList<String> playgrounds;
+    private View      mView;
 
     public MapFragment() { }
 
@@ -46,8 +42,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(View view, Bundle bundle){
         super.onViewCreated(view,bundle);
 
-        mMapView = mView.findViewById(R.id.map);
-        if (mMapView!= null){
+        MapView mMapView = mView.findViewById(R.id.map);
+        if (mMapView != null){
             mMapView.onCreate(null);
             mMapView.onResume();
             mMapView.getMapAsync(this);
@@ -57,7 +53,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
-        mGoogleMap = googleMap;
+        GoogleMap mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         Bundle bundle = getArguments();
@@ -71,7 +67,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public void showPlaygrounds(Bundle bundle, GoogleMap googleMap){
 
-        playgrounds = bundle.getStringArrayList("EXTRA_PLAYGROUNDS");
+        ArrayList<String> playgrounds = bundle.getStringArrayList("EXTRA_PLAYGROUNDS");
         if(playgrounds != null)
             for (String pgStr: playgrounds){
                 int numOfPgUsers =0;

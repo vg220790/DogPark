@@ -14,26 +14,25 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ViewPlaygroundActivity extends AppCompatActivity {
 
-    TextView                playgroundNameTextView;
-    String                  playgroundName;
-    Playground              currentPlayground;
-    ListView                usersListView;
-    ArrayList<UserProfile>  usersList;
-    DatabaseReference       databasePlaygrounds;
+    private String                  playgroundName;
+    private Playground              currentPlayground;
+    private ListView                usersListView;
+    private ArrayList<UserProfile>  usersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_playground);
 
-        databasePlaygrounds = FirebaseDatabase.getInstance().getReference("Playgrounds");
+        DatabaseReference databasePlaygrounds = FirebaseDatabase.getInstance().getReference("Playgrounds");
 
         playgroundName = getIntent().getStringExtra("EXTRA_SELECTED_PLAYGROUND");
 
-        playgroundNameTextView = findViewById(R.id.playgroundName_textView);
+        TextView playgroundNameTextView = findViewById(R.id.playgroundName_textView);
         playgroundNameTextView.setText(playgroundName);
 
         usersListView = findViewById(R.id.users_listview);
@@ -45,7 +44,7 @@ public class ViewPlaygroundActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
                     Playground playground = playgroundSnapshot.getValue(Playground.class);
-                    if (playground.getAddress().equals(playgroundName)) {
+                    if (Objects.requireNonNull(playground).getAddress().equals(playgroundName)) {
                         currentPlayground = playground;
                         usersList.addAll(playground.getUsers());
                     }

@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import com.finalproject.dogplay.models.UserProfile;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,8 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 public class FirstUserProfileActivity extends AppCompatActivity {
 
     private Intent intentToMain;
-    private FirebaseAuth auth;
-    DatabaseReference databaseUserProfiles;
+    private DatabaseReference databaseUserProfiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class FirstUserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         databaseUserProfiles = FirebaseDatabase.getInstance().getReference("UserProfiles");
 
         final EditText uNameET = findViewById(R.id.uName);
@@ -88,7 +88,7 @@ public class FirstUserProfileActivity extends AppCompatActivity {
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        final String current_userID = user.getUid();
+        final String current_userID = Objects.requireNonNull(user).getUid();
         String email = user.getEmail();
 
         UserProfile newUserProfile = new UserProfile(current_userID, email);

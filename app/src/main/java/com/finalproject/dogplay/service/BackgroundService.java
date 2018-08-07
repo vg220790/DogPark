@@ -16,7 +16,6 @@ public class BackgroundService extends Service {
 
     private static final String TAG = "BackgroundService";
     private boolean isRunning;
-    private Context context;
 
     double lat, lon;
 
@@ -32,7 +31,7 @@ public class BackgroundService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG,"service created");
-        this.context = this;
+        Context context = this;
         this.isRunning = false;
         initializeLocationManager();
 
@@ -82,9 +81,9 @@ public class BackgroundService extends Service {
 
         this.isRunning = false;
         if (mLocationManager != null) {
-            for (int i = 0; i < mLocationListeners.length; i++) {
+            for (LocationListener mLocationListener : mLocationListeners) {
                 try {
-                    mLocationManager.removeUpdates(mLocationListeners[i]);
+                    mLocationManager.removeUpdates(mLocationListener);
                 } catch (Exception ex) {
                     Log.i(TAG, "fail to remove location listners, ignore", ex);
                 }

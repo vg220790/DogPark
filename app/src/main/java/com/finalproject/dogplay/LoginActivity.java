@@ -12,26 +12,18 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.finalproject.dogplay.models.Playground;
-import com.finalproject.dogplay.models.UserProfile;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
-    private Button btnSignup, btnLogin, btnReset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +48,9 @@ public class LoginActivity extends AppCompatActivity {
         inputEmail      = findViewById(R.id.email);
         inputPassword   = findViewById(R.id.password);
         progressBar     = findViewById(R.id.progressBar);
-        btnSignup       = findViewById(R.id.btn_signup);
-        btnLogin        = findViewById(R.id.btn_login);
-        btnReset        = findViewById(R.id.btn_reset_password);
+        Button btnSignup = findViewById(R.id.btn_signup);
+        Button btnLogin = findViewById(R.id.btn_login);
+        Button btnReset = findViewById(R.id.btn_reset_password);
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();

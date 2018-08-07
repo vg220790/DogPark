@@ -16,26 +16,26 @@ import java.util.List;
 
 public class PlaygroundsList extends ArrayAdapter<Playground> {
 
-    private Activity context;
-    private List<Playground> playgrounds;
+    private final Activity CONTEXT;
+    private final List<Playground> PLAYGROUNDS;
 
     public PlaygroundsList(Activity context, List<Playground> playgroundsList) {
         super(context, R.layout.playgrounds_listview_layout, playgroundsList);
-        this.context = context;
-        this.playgrounds = playgroundsList;
+        this.CONTEXT = context;
+        this.PLAYGROUNDS = playgroundsList;
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
+        LayoutInflater inflater = CONTEXT.getLayoutInflater();
 
-        View listViewItem = inflater.inflate(R.layout.playgrounds_listview_layout, null, true);
+        View listViewItem = inflater.inflate(R.layout.playgrounds_listview_layout, parent, false);
 
         TextView playgroundName     = listViewItem.findViewById(R.id.playgroundName_textView);
         TextView playgroundUsers    = listViewItem.findViewById(R.id.playgroundUsers_textView);
 
-        Playground playground = playgrounds.get(position);
+        Playground playground = PLAYGROUNDS.get(position);
 
         playgroundName.setText(playground.getAddress());
 

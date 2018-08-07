@@ -21,16 +21,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SearchDogParkActivity extends AppCompatActivity {
 
-    Fragment fragment;
-    Bundle mapFragBundle;
-    ListView playgroundsListView;
+    private Fragment fragment;
+    private ListView playgroundsListView;
 
-    DatabaseReference databasePlaygrounds;
-    List<Playground> playgrounds;
-    ArrayList<String> playgroundsStrList;
+    private List<Playground> playgrounds;
+    private ArrayList<String> playgroundsStrList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class SearchDogParkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_dog_park);
         playgroundsListView = findViewById(R.id.playgrounds_listView);
 
-        databasePlaygrounds = FirebaseDatabase.getInstance().getReference("Playgrounds");
+        DatabaseReference databasePlaygrounds = FirebaseDatabase.getInstance().getReference("Playgrounds");
         playgrounds = new ArrayList<>();
         playgroundsStrList = new ArrayList<>();
 
@@ -48,7 +47,7 @@ public class SearchDogParkActivity extends AppCompatActivity {
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
                     Playground playground = playgroundSnapshot.getValue(Playground.class);
                     playgrounds.add(playground);
-                    playgroundsStrList.add(playground.toString());
+                    playgroundsStrList.add(Objects.requireNonNull(playground).toString());
                 }
                 setFragmentBundle();
                 setListView();
@@ -64,7 +63,7 @@ public class SearchDogParkActivity extends AppCompatActivity {
 
     public void setFragmentBundle() {
 
-        mapFragBundle = new Bundle();
+        Bundle mapFragBundle = new Bundle();
 
         if (!playgroundsStrList.isEmpty()) {
 

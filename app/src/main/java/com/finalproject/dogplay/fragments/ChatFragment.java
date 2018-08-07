@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Class responsible to be the chat screen of the app
@@ -124,7 +125,7 @@ public class ChatFragment extends Fragment {
 
     private void closeAndClean() {
         InputMethodManager manager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        manager.hideSoftInputFromWindow(mChatInput.getWindowToken(), 0);
+        Objects.requireNonNull(manager).hideSoftInputFromWindow(mChatInput.getWindowToken(), 0);
         mChatInput.setText("");
     }
 
