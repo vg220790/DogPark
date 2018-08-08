@@ -3,6 +3,7 @@ package com.finalproject.dogplay;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -50,10 +51,13 @@ public class ViewPlaygroundActivity extends AppCompatActivity implements Activit
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
+                    //TODO
                     Playground playground = playgroundSnapshot.getValue(Playground.class);
-                    if (Objects.requireNonNull(playground).getAddress().equals(playgroundName)) {
+                    if (Objects.requireNonNull(playgroundSnapshot.getKey()).equals(playgroundName)) {
                         currentPlayground = playground;
-                        usersList.addAll(playground.getUsers());
+                        usersList.addAll((ArrayList)playgroundSnapshot.child("visitors").getValue());
+                        Log.d("visit", usersList.toString());
+                        //usersList.addAll(playground.getUsers());
                     }
                 }
                 setUsersListView(usersList);
