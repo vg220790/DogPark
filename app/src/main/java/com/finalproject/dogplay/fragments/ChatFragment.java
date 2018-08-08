@@ -1,5 +1,6 @@
 package com.finalproject.dogplay.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,12 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.finalproject.dogplay.ActivityCallback;
-import com.finalproject.dogplay.MainActivity;
+import com.finalproject.dogplay.ViewPlaygroundActivity;
 import com.finalproject.dogplay.R;
 import com.finalproject.dogplay.models.UserProfile;
 import com.finalproject.dogplay.adapters.ChatAdapter;
 import com.finalproject.dogplay.models.ChatData;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +41,8 @@ import java.util.Objects;
 public class ChatFragment extends Fragment {
 
     private static final String TAG = "ChatFragment";
+
+    private DatabaseReference users;
 
     /** Activity callback **/
     private ActivityCallback mCallback;
@@ -58,6 +63,9 @@ public class ChatFragment extends Fragment {
      *
      * @return fragment instance
      */
+
+    private long currentTime;
+
     public static ChatFragment newInstance() {
         return new ChatFragment();
     }
@@ -67,11 +75,29 @@ public class ChatFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final MainActivity activity = (MainActivity)getActivity();
-        setHasOptionsMenu(true);
-        UserProfile uf = activity.getCurrentUserProfile();
-        mUsername = uf.getuName() +":";
+        currentTime = new Date().getTime();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mUserId = user.getUid();
+        users = FirebaseDatabase.getInstance().getReference().child("UserProfiles");
 
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    UserProfile user = userSnapshot.getValue(UserProfile.class);
+                    if (Objects.requireNonNull(user).getuID().equals(mUserId)) {
+                        mUsername = user.getuName();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        setHasOptionsMenu(true);
         setupConnection();
     }
 
@@ -87,8 +113,8 @@ public class ChatFragment extends Fragment {
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
 
                 ChatData data = new ChatData();
+                data.setTime();
                 data.setMessage(mChatInput.getText().toString());
-                //data.setId(mUserId);
                 data.setName(mUsername);
 
                 mReference.child(String.valueOf(new Date().getTime())).setValue(data);
@@ -131,7 +157,8 @@ public class ChatFragment extends Fragment {
 
     private void setupConnection() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mReference = database.getReference("Chat");
+        final ViewPlaygroundActivity activity = (ViewPlaygroundActivity)getActivity();
+        mReference = database.getReference("Playgrounds").child(activity.getCurrentPlaygroundID()).child("chat");
 
         mReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -154,7 +181,12 @@ public class ChatFragment extends Fragment {
 
         for(DataSnapshot item : dataSnapshot.getChildren()) {
             ChatData data = item.getValue(ChatData.class);
-            mAdapter.addData(data);
+            if(currentTime <= data.getTime())
+                mAdapter.addData(data);
+            else{
+                Log.d("time","time passed");
+            }
+            Log.d("dfdfdf","dfdfsdf");
         }
 
         mAdapter.notifyDataSetChanged();

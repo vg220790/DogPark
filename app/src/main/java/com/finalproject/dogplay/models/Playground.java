@@ -4,25 +4,42 @@ import java.util.ArrayList;
 
 public class Playground {
 
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private ArrayList<UserProfile> users = new ArrayList<>();
-    private String name;
     private String address;
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
     private double longitude;
     private double latitude;
     ChatData playgroundChat;
 
-    public Playground(){
-
-    }
 
     public void newChat(){
-
+        playgroundChat = new ChatData();
     }
+    public Playground(){}
 
     public Playground(String address, double latitude, double longitude){
         setAddress(address);
         this.latitude = latitude;
         this.longitude = longitude;
+        newChat();
     }
 
     public ArrayList<UserProfile> getUsers() {

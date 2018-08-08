@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -36,7 +35,7 @@ import com.finalproject.dogplay.fragments.ChatFragment;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements ActivityCallback{
+public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private DatabaseReference databaseUserProfiles;
@@ -72,12 +71,12 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
 
 
         ProgressBar progressBar = findViewById(R.id.progressBar);
-        Button userDataBtn = findViewById(R.id.update_user_data);
-        Button accountSetBtn = findViewById(R.id.update_account_settings);
-        Button findPlayground = findViewById(R.id.findPlayground);
-        username        = findViewById(R.id.username);
-        dogName = findViewById(R.id.dogname);
-        dogInfo = findViewById(R.id.dogInfo);
+        Button userDataBtn      = findViewById(R.id.update_user_data);
+        Button accountSetBtn    = findViewById(R.id.update_account_settings);
+        Button findPlayground   = findViewById(R.id.findPlayground);
+        username                = findViewById(R.id.username);
+        dogName                 = findViewById(R.id.dogname);
+        dogInfo                 = findViewById(R.id.dogInfo);
 
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -136,21 +135,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback{
 
     }//end of onCreate
 
-
-    @Override
-    public void openChat() {
-        replaceFragment(ChatFragment.newInstance());
-    }
-
-
-    /// Private methods
-
-    private void replaceFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();
-    }
 
     public void getCurrentUserProfile(FirebaseUser user){
         final String current_userID = user.getUid();

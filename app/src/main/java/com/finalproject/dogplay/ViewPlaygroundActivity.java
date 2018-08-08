@@ -1,10 +1,13 @@
 package com.finalproject.dogplay;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.finalproject.dogplay.fragments.ChatFragment;
 import com.finalproject.dogplay.models.Playground;
 import com.finalproject.dogplay.models.UserProfile;
 import com.google.firebase.database.DataSnapshot;
@@ -16,7 +19,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ViewPlaygroundActivity extends AppCompatActivity {
+
+public class ViewPlaygroundActivity extends AppCompatActivity implements ActivityCallback{
 
     private String                  playgroundName;
     private Playground              currentPlayground;
@@ -38,6 +42,9 @@ public class ViewPlaygroundActivity extends AppCompatActivity {
         usersListView = findViewById(R.id.users_listview);
 
         usersList = new ArrayList<>();
+
+        openChat();
+
 
         databasePlaygrounds.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -63,4 +70,25 @@ public class ViewPlaygroundActivity extends AppCompatActivity {
         UsersList adapter = new UsersList(ViewPlaygroundActivity.this, usersList);
         usersListView.setAdapter(adapter);
     }
+
+
+    @Override
+    public void openChat() {
+        replaceFragment(ChatFragment.newInstance());
+    }
+
+    /// Private methods
+
+    private void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.chat_fragment, fragment)
+                .commit();
+    }
+
+    public String getCurrentPlaygroundID() {
+        return playgroundName = getIntent().getStringExtra("EXTRA_PLAYGROUND_ID");
+    }
 }
+
+

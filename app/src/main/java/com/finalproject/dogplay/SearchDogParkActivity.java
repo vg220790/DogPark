@@ -37,7 +37,7 @@ public class SearchDogParkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_dog_park);
         playgroundsListView = findViewById(R.id.playgrounds_listView);
 
-        DatabaseReference databasePlaygrounds = FirebaseDatabase.getInstance().getReference("Playgrounds");
+        DatabaseReference databasePlaygrounds = FirebaseDatabase.getInstance().getReference().child("Playgrounds");
         playgrounds = new ArrayList<>();
         playgroundsStrList = new ArrayList<>();
 
@@ -91,9 +91,9 @@ public class SearchDogParkActivity extends AppCompatActivity {
         playgroundsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selected_pg_name = (playgrounds.get(position)).getAddress();
                 Intent intent = new Intent(SearchDogParkActivity.this, ViewPlaygroundActivity.class);
-                intent.putExtra("EXTRA_SELECTED_PLAYGROUND", selected_pg_name);
+                intent.putExtra("EXTRA_SELECTED_PLAYGROUND", (playgrounds.get(position)).getAddress());
+                intent.putExtra("EXTRA_PLAYGROUND_ID", (playgrounds.get(position)).getId());
                 startActivity(intent);
             }
         });

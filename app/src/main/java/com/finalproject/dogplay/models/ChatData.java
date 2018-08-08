@@ -1,5 +1,7 @@
 package com.finalproject.dogplay.models;
 
+import java.util.Date;
+
 /**
  * Class responsible to hold the name and the message to the user
  * to send to firebase
@@ -7,13 +9,18 @@ package com.finalproject.dogplay.models;
 public class ChatData {
 
     private String mName;
-    //private String mId;
+
     private String mMessage;
+
+    private long time;
 
     public ChatData() {
         // empty constructor
     }
 
+    public void setTime(){
+        time = new Date().getTime();
+    }
     public String getName() {
         return mName;
     }
@@ -22,9 +29,9 @@ public class ChatData {
         mName = name;
     }
 
-//    public String getId() {
-//        return mId;
-//    }
+    public long getTime() {
+        return time;
+    }
 
     public String getMessage() {
         return mMessage;
@@ -34,7 +41,5 @@ public class ChatData {
         mMessage = message;
     }
 
-//    public void setId(String id) {
-//        mId = id;
-//    }
+
 }
