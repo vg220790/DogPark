@@ -81,7 +81,7 @@ public class Playground {
         if (!visitors.isEmpty()){
             StringBuilder s = new StringBuilder();
             s.append("-[");
-            s.append(makeUserString(true));
+            s.append(makeUserString(false));
             usersString = s.substring(0, s.length() - 1) + "]"; //remove last "," from users string array
         }
         return toReturn + usersString;
