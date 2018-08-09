@@ -40,15 +40,10 @@ public class PlaygroundsList extends ArrayAdapter<Playground> {
         playgroundName.setText(playground.getAddress());
 
         String users;
-        if (!playground.getUsers().isEmpty()) {
-            StringBuilder userBuilder = new StringBuilder();
-            for (UserProfile userProfile : playground.getUsers()) {
-                userBuilder.append(userProfile.getuName()).append(" & ")
-                        .append(userProfile.getdName()).append("; ");
-            }
-            users = userBuilder.toString();
+        if (playground.hasVisitors()) {
+            users = playground.makeUserString(false);
         } else {
-            users = " There are'nt any users currently at this playground";
+            users = " There aren't any users currently at this playground";
         }
 
         playgroundUsers.setText(users);

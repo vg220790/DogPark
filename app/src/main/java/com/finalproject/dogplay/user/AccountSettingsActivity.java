@@ -1,4 +1,4 @@
-package com.finalproject.dogplay;
+package com.finalproject.dogplay.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.finalproject.dogplay.R;
 import com.finalproject.dogplay.models.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

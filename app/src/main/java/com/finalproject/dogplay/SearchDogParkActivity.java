@@ -20,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,6 +48,11 @@ public class SearchDogParkActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
                     Playground playground = playgroundSnapshot.getValue(Playground.class);
+                    ArrayList<String> visitors = new ArrayList();
+                    Iterator<DataSnapshot>playgroundSnapshotIterator = playgroundSnapshot.child("visitors").getChildren().iterator();
+                    while (playgroundSnapshotIterator.hasNext())
+                        visitors.add((String)playgroundSnapshotIterator.next().child("id").getValue());
+                    playground.setVisitors(visitors);
                     playgrounds.add(playground);
                     playgroundsStrList.add(Objects.requireNonNull(playground).toString());
                 }

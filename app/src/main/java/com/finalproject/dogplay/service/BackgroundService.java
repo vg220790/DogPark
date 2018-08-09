@@ -25,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -200,13 +202,22 @@ public class BackgroundService extends Service {
         playgrounds.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
+
                     double currentPlaygroundLat  = (Double) playgroundSnapshot.child("latitude").getValue();
                     double currentPlaygroundLon  = (Double) playgroundSnapshot.child("longitude").getValue();
 
+                    boolean userIsInsideThePlayground = playgroundSnapshot.child("visitors").toString().contains("{id="+mUserId+"}");
                     boolean inRange = inRange(currentPlaygroundLat, currentPlaygroundLon , lat, lon);
                     if(inRange){
-                        mangeUserInRange(mUserId , playgroundSnapshot.getKey());
+                        //if user is already in the playground we won't add him
+                        if(!userIsInsideThePlayground)
+                            mangeUserInRange(mUserId , playgroundSnapshot.getKey());
+                    } else {
+                        //if user left the garden we will remove him
+                        if(userIsInsideThePlayground)
+                            mangeUserNotInRange(playgroundSnapshot ,mUserId , playgroundSnapshot.getKey());
                     }
                 }
             }
@@ -220,6 +231,16 @@ public class BackgroundService extends Service {
 
     private void mangeUserInRange(String userId , String playgroundID){
         playgrounds.child(playgroundID).child("visitors").push().child("id").setValue(userId);
+    }
+
+    private void mangeUserNotInRange(DataSnapshot playgroundSnapshot, String userId , String playgroundID){
+        Iterator<DataSnapshot> playgroundSnapshotIterator = playgroundSnapshot.child("visitors").getChildren().iterator();
+        while (playgroundSnapshotIterator.hasNext()){
+            DataSnapshot userToCheck = playgroundSnapshotIterator.next();
+            if(userToCheck.child("id").getValue().equals(userId))
+                playgrounds.child(playgroundID).child("visitors").child(userToCheck.getKey()).setValue(null);
+        }
+
     }
 
 }

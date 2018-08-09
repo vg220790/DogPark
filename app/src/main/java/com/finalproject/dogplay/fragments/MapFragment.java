@@ -77,14 +77,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 double lat = Double.parseDouble(playground[1]);
                 double lon = Double.parseDouble(playground[2]);
                 if (playground.length > 3){ //if there are users in the park
-                    String users = playground[3];
-                    if (users.contains("[") && users.contains("]")){
-                        users = users.substring(1,users.length()-2); // getting rid of "[" and "]"
-                    }
-                    if (!users.equals("")){
-                        pgUsers = users.split(",");
-                        numOfPgUsers = pgUsers.length;
-                    }
+                    //numOfPgUsers = playground.
                 }
                 googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(address + ": " + " users " + numOfPgUsers));
             }

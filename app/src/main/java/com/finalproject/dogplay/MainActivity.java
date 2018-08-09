@@ -21,6 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.ActivityManager;
 
+import com.finalproject.dogplay.user.AccountSettingsActivity;
+import com.finalproject.dogplay.user.FirstUserProfileActivity;
+import com.finalproject.dogplay.user.LoginActivity;
+import com.finalproject.dogplay.user.UserProfileActivity;
 import com.finalproject.dogplay.models.UserProfile;
 import com.finalproject.dogplay.service.BackgroundService;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,8 +34,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import com.finalproject.dogplay.fragments.ChatFragment;
 
 import java.util.Objects;
 

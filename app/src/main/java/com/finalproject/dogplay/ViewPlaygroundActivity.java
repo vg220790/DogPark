@@ -4,10 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.finalproject.dogplay.adapters.UsersList;
 import com.finalproject.dogplay.fragments.ChatFragment;
 import com.finalproject.dogplay.models.Playground;
 import com.finalproject.dogplay.models.UserProfile;
