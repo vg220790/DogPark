@@ -87,12 +87,12 @@ public class Playground {
         return toReturn + usersString;
     }
     public String makeUserString(boolean detailed){
+        userString = new StringBuilder();
         findUserByID(detailed);
         return userString.toString();
     }
 
     private void findUserByID(final boolean detailed){
-        userString = new StringBuilder();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("UserProfiles");
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
