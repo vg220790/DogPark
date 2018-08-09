@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
     }//end of onCreate
 
 
-    public void getCurrentUserProfile(FirebaseUser user){
+    private void getCurrentUserProfile(FirebaseUser user){
         final String current_userID = user.getUid();
         databaseUserProfiles.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void showDogDescription(){
+    private void showDogDescription(){
         //firstly getting mandatory attribute of dog's size
         StringBuilder dogsInfo = new StringBuilder("size: " + currentUserProfile.getdDescription().get(0) + "\n");
         for (String attribute: currentUserProfile.getdDescription().subList(1,(currentUserProfile.getdDescription().size())))
@@ -182,10 +182,10 @@ public class MainActivity extends AppCompatActivity {
         auth.signOut();
     }
 
-    public void GPSService(){
+    private void GPSService(){
         /*start gps service*/
         if(!isRunningService("com.finalproject.dogplay.service.BackgroundService")) {
-            if(runtime_permissions() == false){
+            if(!runtime_permissions()){
                 Intent i =new Intent(getApplicationContext(),BackgroundService.class);
                 startService(i);
                 Toast.makeText(MainActivity.this, "service started!", Toast.LENGTH_SHORT).show();
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
      * @param serviceName String representing the service name
      * @return If the service is running or not
      */
-    public boolean isRunningService(String serviceName){
+    private boolean isRunningService(String serviceName){
         ActivityManager manager = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
         for(ActivityManager.RunningServiceInfo service : Objects.requireNonNull(manager).getRunningServices(Integer.MAX_VALUE)){
             if(serviceName.equals(service.service.getClassName()))

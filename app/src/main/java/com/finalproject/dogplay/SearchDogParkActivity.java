@@ -20,7 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -49,9 +48,8 @@ public class SearchDogParkActivity extends AppCompatActivity {
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
                     Playground playground = playgroundSnapshot.getValue(Playground.class);
                     ArrayList<String> visitors = new ArrayList();
-                    Iterator<DataSnapshot>playgroundSnapshotIterator = playgroundSnapshot.child("visitors").getChildren().iterator();
-                    while (playgroundSnapshotIterator.hasNext())
-                        visitors.add((String)playgroundSnapshotIterator.next().child("id").getValue());
+                    for (DataSnapshot dataSnapshot1 : playgroundSnapshot.child("visitors").getChildren())
+                        visitors.add((String) dataSnapshot1.child("id").getValue());
                     playground.setVisitors(visitors);
                     playgrounds.add(playground);
                     playgroundsStrList.add(Objects.requireNonNull(playground).toString());
@@ -68,7 +66,7 @@ public class SearchDogParkActivity extends AppCompatActivity {
 
     }// end of onCreate
 
-    public void setFragmentBundle() {
+    private void setFragmentBundle() {
 
         Bundle mapFragBundle = new Bundle();
 
@@ -90,7 +88,7 @@ public class SearchDogParkActivity extends AppCompatActivity {
 
     }
 
-    public void setListView() {
+    private void setListView() {
 
         PlaygroundsList adapter = new PlaygroundsList(SearchDogParkActivity.this, playgrounds);
         playgroundsListView.setAdapter(adapter);

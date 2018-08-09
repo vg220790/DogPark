@@ -84,7 +84,7 @@ public class FirstUserProfileActivity extends AppCompatActivity {
         });
     }
 
-    protected UserProfile makeNewUserData(String uName, String dName, RadioGroup dSizeRG
+    private UserProfile makeNewUserData(String uName, String dName, RadioGroup dSizeRG
             , CheckBox friendlyCB, CheckBox playfulCB, CheckBox goodWithPeopleCB){
 
         //get current user
@@ -106,9 +106,9 @@ public class FirstUserProfileActivity extends AppCompatActivity {
 
     }
 
-    protected  ArrayList<String> dogDescription(RadioGroup dSizeRG,
-                                                CheckBox friendlyCB, CheckBox playfulCB,
-                                                CheckBox goodWithPeopleCB){
+    private ArrayList<String> dogDescription(RadioGroup dSizeRG,
+                                             CheckBox friendlyCB, CheckBox playfulCB,
+                                             CheckBox goodWithPeopleCB){
         ArrayList<String> dDescription = new ArrayList<>();
         //dog size
         dDescription.add(((RadioButton)findViewById(dSizeRG.getCheckedRadioButtonId()))
@@ -123,7 +123,7 @@ public class FirstUserProfileActivity extends AppCompatActivity {
         return  dDescription;
     }
 
-    protected void addUserToFireBase(final UserProfile newUserProfile){
+    private void addUserToFireBase(final UserProfile newUserProfile){
         databaseUserProfiles.addListenerForSingleValueEvent(new ValueEventListener(){
 
             @Override

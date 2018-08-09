@@ -24,11 +24,11 @@ public class Playground {
     }
     private double longitude;
     private double latitude;
-    ChatData playgroundChat;
+    private ChatData playgroundChat;
     private StringBuilder userString;
 
 
-    public void newChat(){
+    private void newChat(){
         playgroundChat = new ChatData();
     }
     public Playground(){}
@@ -52,7 +52,7 @@ public class Playground {
         return id;
     }
 
-    public void setAddress(String address) {
+    private void setAddress(String address) {
         this.address = address;
     }
 

@@ -10,26 +10,17 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.finalproject.dogplay.models.Playground;
-import com.finalproject.dogplay.models.UserProfile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 
 public class BackgroundService extends Service {
@@ -39,12 +30,13 @@ public class BackgroundService extends Service {
     private static final String TAG = "BackgroundService";
     private boolean isRunning;
 
-    double lat, lon;
+    private double lat;
+    private double lon;
 
     private LocationManager mLocationManager = null;
     private static final int LOCATION_INTERVAL = 10*1000;
     private static final float LOCATION_DISTANCE = 0;
-    LocationListener[] mLocationListeners = new LocationListener[] {
+    private LocationListener[] mLocationListeners = new LocationListener[] {
             new LocationListener(LocationManager.GPS_PROVIDER),
             new LocationListener(LocationManager.NETWORK_PROVIDER)
     };
@@ -60,7 +52,7 @@ public class BackgroundService extends Service {
 
     }
 
-    public Location getLocation(){
+    private Location getLocation(){
         Location location = null;
         try {
             mLocationManager.requestLocationUpdates(
@@ -173,12 +165,12 @@ public class BackgroundService extends Service {
 
     private boolean inRange(double pLat, double pLon, double myLat, double myLon){
 
-        return (haversine(pLat , pLon , myLat , myLon)*1000) <= 35 ? true : false;
+        return (haversine(pLat, pLon, myLat, myLon) * 1000) <= 35;
 
     }
 
 
-    public double haversine(double lat1, double lng1, double lat2, double lng2) {
+    private double haversine(double lat1, double lng1, double lat2, double lng2) {
         int r = 6371; // average radius of the earth in km
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lng2 - lng1);
@@ -234,10 +226,8 @@ public class BackgroundService extends Service {
     }
 
     private void mangeUserNotInRange(DataSnapshot playgroundSnapshot, String userId , String playgroundID){
-        Iterator<DataSnapshot> playgroundSnapshotIterator = playgroundSnapshot.child("visitors").getChildren().iterator();
-        while (playgroundSnapshotIterator.hasNext()){
-            DataSnapshot userToCheck = playgroundSnapshotIterator.next();
-            if(userToCheck.child("id").getValue().equals(userId))
+        for (DataSnapshot userToCheck : playgroundSnapshot.child("visitors").getChildren()) {
+            if (userToCheck.child("id").getValue().equals(userId))
                 playgrounds.child(playgroundID).child("visitors").child(userToCheck.getKey()).setValue(null);
         }
 

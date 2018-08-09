@@ -53,7 +53,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
-        GoogleMap mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         Bundle bundle = getArguments();
@@ -65,7 +64,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         showPlaygrounds(bundle,googleMap);
     }
 
-    public void showPlaygrounds(Bundle bundle, GoogleMap googleMap){
+    private void showPlaygrounds(Bundle bundle, GoogleMap googleMap){
 
         ArrayList<String> playgrounds = bundle.getStringArrayList("EXTRA_PLAYGROUNDS");
         if(playgrounds != null)

@@ -58,9 +58,8 @@ public class ViewPlaygroundActivity extends AppCompatActivity implements Activit
                     if (Objects.requireNonNull(playgroundSnapshot.getKey()).equals(playgroundName)) {
                         currentPlayground = playground;
                         ArrayList<String> visitors = new ArrayList();
-                        Iterator<DataSnapshot> playgroundSnapshotIterator = playgroundSnapshot.child("visitors").getChildren().iterator();
-                        while (playgroundSnapshotIterator.hasNext())
-                            visitors.add((String)playgroundSnapshotIterator.next().child("id").getValue());
+                        for (DataSnapshot dataSnapshot1 : playgroundSnapshot.child("visitors").getChildren())
+                            visitors.add((String) dataSnapshot1.child("id").getValue());
                         playground.setVisitors(visitors);
                         Log.d("visit", usersList.toString());
                         usersList.addAll(visitors);
@@ -75,7 +74,7 @@ public class ViewPlaygroundActivity extends AppCompatActivity implements Activit
             }
         });
     }
-    protected ArrayList<UserProfile> getUsersFromId(final ArrayList<String> userIds){
+    private ArrayList<UserProfile> getUsersFromId(final ArrayList<String> userIds){
         userProfiles = new ArrayList<>();
         DatabaseReference databasePlaygrounds = FirebaseDatabase.getInstance().getReference("UserProfiles");
         databasePlaygrounds.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -97,7 +96,7 @@ public class ViewPlaygroundActivity extends AppCompatActivity implements Activit
         return userProfiles;
     }
 
-    protected void setUsersListView(ArrayList<UserProfile> usersList) {
+    private void setUsersListView(ArrayList<UserProfile> usersList) {
         UsersList adapter = new UsersList(ViewPlaygroundActivity.this, usersList);
         usersListView.setAdapter(adapter);
     }

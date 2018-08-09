@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.finalproject.dogplay.R;
 import com.finalproject.dogplay.models.Playground;
-import com.finalproject.dogplay.models.UserProfile;
 
 import java.util.List;
 

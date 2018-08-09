@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void setDogParks(){
 
-        final ArrayList<Playground> playgroundArrayList= new ArrayList<Playground>();
+        final ArrayList<Playground> playgroundArrayList= new ArrayList<>();
 
         playgroundArrayList.add(new Playground("אמיל בריג 6, תל אביב יפו",32.109001,34.822982));
         playgroundArrayList.add(new Playground( "גינת כלבים פיקוס",32.113836,34.818336));
@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<String> des = new ArrayList<String>();
+                ArrayList<String> des = new ArrayList<>();
                 des.add("small");
                 des.add("friendly");
                 des.add("playful");

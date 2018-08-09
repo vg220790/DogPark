@@ -96,8 +96,8 @@ public class UserProfileActivity extends AppCompatActivity {
         });
     }
 
-    public void updateUserData(final String username,final String  dogname,final RadioGroup dSizeRG
-            ,final CheckBox friendlyCB,final CheckBox playfulCB,final CheckBox goodWithPeopleCB){
+    private void updateUserData(final String username, final String dogname, final RadioGroup dSizeRG
+            , final CheckBox friendlyCB, final CheckBox playfulCB, final CheckBox goodWithPeopleCB){
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String current_userID = Objects.requireNonNull(user).getUid();
 
@@ -133,9 +133,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
     }
 
-    protected  ArrayList<String> dogDescription(RadioGroup dSizeRG,
-                                                CheckBox friendlyCB, CheckBox playfulCB,
-                                                CheckBox goodWithPeopleCB){
+    private ArrayList<String> dogDescription(RadioGroup dSizeRG,
+                                             CheckBox friendlyCB, CheckBox playfulCB,
+                                             CheckBox goodWithPeopleCB){
 
         ArrayList<String> dDescription = currentUserProfile.getdDescription();
         dDescription.clear();
@@ -201,7 +201,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
  */
 
-    public void showCurrentUserData(){
+    private void showCurrentUserData(){
         uNameET.setText(userName);
         dNameET.setText(dogName);
 

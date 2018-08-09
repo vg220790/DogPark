@@ -34,7 +34,7 @@ public class UserProfile {
     public String getuID() {
         return uID;
     }
-    public void setuID(String id) {
+    private void setuID(String id) {
         this.uID = id;
     }
     public String getuEMail() {

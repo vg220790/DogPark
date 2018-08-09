@@ -260,7 +260,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     }//end of onCreate
 
-    public void getCurrentUserProfile(FirebaseUser user){
+    private void getCurrentUserProfile(FirebaseUser user){
         final String current_userID = user.getUid();
         databaseUserProfiles.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
@@ -282,7 +282,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     }
 
     //sign out method
-    public void signOut() {
+    private void signOut() {
         auth.signOut();
     }
 
