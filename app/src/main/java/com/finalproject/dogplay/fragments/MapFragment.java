@@ -69,15 +69,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         ArrayList<String> playgrounds = bundle.getStringArrayList("EXTRA_PLAYGROUNDS");
         if(playgrounds != null)
             for (String pgStr: playgrounds){
-                int numOfPgUsers =0;
-                String[] pgUsers;
-                String[] playground = pgStr.split("-");
+                // playground data is saved : address###lat###lon###numOfPgUsers
+                String[] playground = pgStr.split("###");
                 String address = playground[0];
                 double lat = Double.parseDouble(playground[1]);
                 double lon = Double.parseDouble(playground[2]);
-                if (playground.length > 3){ //if there are users in the park
-                    //numOfPgUsers = playground.
-                }
+                String numOfPgUsers = playground[3];
                 googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(address + ": " + " users " + numOfPgUsers));
             }
 

@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
                 userProfileIntent.putExtras(extras);
                 startActivity(userProfileIntent);
 
-                //startActivity(new Intent(MainActivity.this, UserProfileActivity.class));
             }
         });
 

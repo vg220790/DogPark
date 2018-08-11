@@ -34,13 +34,13 @@ public class PlaygroundsList extends ArrayAdapter<Playground> {
         TextView playgroundName     = listViewItem.findViewById(R.id.playgroundName_textView);
         TextView playgroundUsers    = listViewItem.findViewById(R.id.playgroundUsers_textView);
 
-        Playground playground = PLAYGROUNDS.get(position);
+        Playground playground = this.PLAYGROUNDS.get(position);
 
         playgroundName.setText(playground.getAddress());
 
         String users;
-        if (playground.hasVisitors()) {
-            users = playground.makeUserString(false);
+        if (playground.hasUsers()) {
+            users = playground.usersToString(false);
         } else {
             users = " There aren't any users currently at this playground";
         }

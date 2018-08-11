@@ -1,6 +1,6 @@
 package com.finalproject.dogplay;
 
-import android.support.annotation.NonNull;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,16 +19,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Objects;
 
 
 public class ViewPlaygroundActivity extends AppCompatActivity implements ActivityCallback{
 
     private String                  playgroundName;
-    private Playground              currentPlayground;
     private ListView                usersListView;
-    private ArrayList<String>       usersList;
+    private ArrayList<UserProfile>  usersList;
     private ArrayList<UserProfile>  userProfiles;
 
     @Override
@@ -47,25 +45,21 @@ public class ViewPlaygroundActivity extends AppCompatActivity implements Activit
 
         usersList = new ArrayList<>();
 
-        openChat();
-
-
         databasePlaygrounds.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
                     Playground playground = playgroundSnapshot.getValue(Playground.class);
-                    if (Objects.requireNonNull(playgroundSnapshot.getKey()).equals(playgroundName)) {
-                        currentPlayground = playground;
-                        ArrayList<String> visitors = new ArrayList();
+                    if (Objects.requireNonNull(playgroundSnapshot.child("address").getValue()).equals(playgroundName)) {
+                        userProfiles = new ArrayList();
                         for (DataSnapshot dataSnapshot1 : playgroundSnapshot.child("visitors").getChildren())
-                            visitors.add((String) dataSnapshot1.child("id").getValue());
-                        playground.setVisitors(visitors);
-                        Log.d("visit", usersList.toString());
-                        usersList.addAll(visitors);
+                            userProfiles.add(dataSnapshot1.child("userProfile").getValue(UserProfile.class));
+                        playground.setUsers(userProfiles);
+                        Log.d("visit", userProfiles.toString());
+                        usersList.addAll(userProfiles);
                     }
                 }
-                setUsersListView(getUsersFromId(usersList));
+                setUsersListView(usersList);
             }
 
             @Override
@@ -73,28 +67,16 @@ public class ViewPlaygroundActivity extends AppCompatActivity implements Activit
 
             }
         });
-    }
-    private ArrayList<UserProfile> getUsersFromId(final ArrayList<String> userIds){
-        userProfiles = new ArrayList<>();
-        DatabaseReference databasePlaygrounds = FirebaseDatabase.getInstance().getReference("UserProfiles");
-        databasePlaygrounds.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    if(userIds.contains(userSnapshot.child("uID").getValue())) {
-                        userProfiles.add(userSnapshot.getValue(UserProfile.class));
-                    }
-                }
+            public void run() {
+                openChat();
             }
+        }, 400);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return userProfiles;
     }
+
 
     private void setUsersListView(ArrayList<UserProfile> usersList) {
         UsersList adapter = new UsersList(ViewPlaygroundActivity.this, usersList);

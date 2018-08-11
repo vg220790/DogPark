@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.finalproject.dogplay.models.UserProfile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
-import java.util.Iterator;
 
 
 public class BackgroundService extends Service {
@@ -41,15 +43,47 @@ public class BackgroundService extends Service {
             new LocationListener(LocationManager.NETWORK_PROVIDER)
     };
 
+    private DatabaseReference userProfileRef;
+    private UserProfile myUserProfile;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         Log.i(TAG,"service created");
         Context context = this;
         this.isRunning = false;
-        initializeLocationManager();
+        loadUser();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initializeLocationManager();
+            }
+        }, 200);
 
 
+    }
+
+    private void loadUser(){
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String mUserId = user.getUid();
+        userProfileRef= FirebaseDatabase.getInstance().getReference().child("UserProfiles");
+        userProfileRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
+                {
+                    if(mUserId.equals(userSnapshot.child("uID").getValue())) {
+                        myUserProfile = userSnapshot.getValue(UserProfile.class);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private Location getLocation(){
@@ -187,9 +221,9 @@ public class BackgroundService extends Service {
     }
 
     private void mangeUsers(final double lat , final double lon){
-        //TODO
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String mUserId = user.getUid();
+
         playgrounds = FirebaseDatabase.getInstance().getReference().child("Playgrounds");
         playgrounds.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -200,12 +234,12 @@ public class BackgroundService extends Service {
                     double currentPlaygroundLat  = (Double) playgroundSnapshot.child("latitude").getValue();
                     double currentPlaygroundLon  = (Double) playgroundSnapshot.child("longitude").getValue();
 
-                    boolean userIsInsideThePlayground = playgroundSnapshot.child("visitors").toString().contains("{id="+mUserId+"}");
+                    boolean userIsInsideThePlayground = playgroundSnapshot.child("visitors").toString().contains("uID="+mUserId);
                     boolean inRange = inRange(currentPlaygroundLat, currentPlaygroundLon , lat, lon);
                     if(inRange){
                         //if user is already in the playground we won't add him
                         if(!userIsInsideThePlayground)
-                            mangeUserInRange(mUserId , playgroundSnapshot.getKey());
+                            mangeUserInRange(playgroundSnapshot.getKey());
                     } else {
                         //if user left the garden we will remove him
                         if(userIsInsideThePlayground)
@@ -221,13 +255,13 @@ public class BackgroundService extends Service {
         });
     }
 
-    private void mangeUserInRange(String userId , String playgroundID){
-        playgrounds.child(playgroundID).child("visitors").push().child("id").setValue(userId);
+    private void mangeUserInRange(String playgroundID){
+        playgrounds.child(playgroundID).child("visitors").push().child("userProfile").setValue(myUserProfile);
     }
 
     private void mangeUserNotInRange(DataSnapshot playgroundSnapshot, String userId , String playgroundID){
         for (DataSnapshot userToCheck : playgroundSnapshot.child("visitors").getChildren()) {
-            if (userToCheck.child("id").getValue().equals(userId))
+            if (userToCheck.child("userProfile").child("uID").getValue().equals(userId))
                 playgrounds.child(playgroundID).child("visitors").child(userToCheck.getKey()).setValue(null);
         }
 

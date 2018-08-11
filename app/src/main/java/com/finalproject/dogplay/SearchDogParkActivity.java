@@ -1,6 +1,8 @@
 package com.finalproject.dogplay;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +15,7 @@ import android.widget.ListView;
 import com.finalproject.dogplay.adapters.PlaygroundsList;
 import com.finalproject.dogplay.fragments.MapFragment;
 import com.finalproject.dogplay.models.Playground;
+import com.finalproject.dogplay.models.UserProfile;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +34,7 @@ public class SearchDogParkActivity extends AppCompatActivity {
 
     private List<Playground> playgrounds;
     private ArrayList<String> playgroundsStrList;
+    private ArrayList<UserProfile> userProfiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,20 +43,20 @@ public class SearchDogParkActivity extends AppCompatActivity {
         playgroundsListView = findViewById(R.id.playgrounds_listView);
 
         DatabaseReference databasePlaygrounds = FirebaseDatabase.getInstance().getReference().child("Playgrounds");
-        playgrounds = new ArrayList<>();
-        playgroundsStrList = new ArrayList<>();
+        playgrounds         = new ArrayList<>();
+        playgroundsStrList  = new ArrayList<>();
+        userProfiles        = new ArrayList<>();
 
         databasePlaygrounds.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
-                    Playground playground = playgroundSnapshot.getValue(Playground.class);
-                    ArrayList<String> visitors = new ArrayList();
-                    for (DataSnapshot dataSnapshot1 : playgroundSnapshot.child("visitors").getChildren())
-                        visitors.add((String) dataSnapshot1.child("id").getValue());
-                    playground.setVisitors(visitors);
+                    Playground playground = makePlaygroundFromFB(playgroundSnapshot);
                     playgrounds.add(playground);
-                    playgroundsStrList.add(Objects.requireNonNull(playground).toString());
+                    //final String playgroundToString = Objects.requireNonNull(playground).toString();
+
+                    playgroundsStrList.add(stringForMap(playground));
+
                 }
                 setFragmentBundle();
                 setListView();
@@ -60,11 +64,30 @@ public class SearchDogParkActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                throw databaseError.toException();
             }
         });
 
     }// end of onCreate
+
+    private String stringForMap(Playground playground){
+        return playground.getAddress() + "### " +  playground.getLatitude() + "### "
+                + playground.getLongitude() + "### " + playground.getUsers().size();
+    }
+
+    private Playground makePlaygroundFromFB(DataSnapshot playgroundSnapshot){
+        Playground playground = new Playground();
+        userProfiles = new ArrayList<>();
+        playground.setAddress((String) playgroundSnapshot.child("address").getValue());
+        playground.setId(playgroundSnapshot.getKey());
+        playground.setLatitude((double) playgroundSnapshot.child("latitude").getValue());
+        playground.setLongitude((double) playgroundSnapshot.child("longitude").getValue());
+        for (DataSnapshot dataSnapshot1 : playgroundSnapshot.child("visitors").getChildren())
+            userProfiles.add(dataSnapshot1.child("userProfile").getValue(UserProfile.class));
+
+        playground.setUsers(userProfiles);
+        return playground;
+    }
 
     private void setFragmentBundle() {
 
