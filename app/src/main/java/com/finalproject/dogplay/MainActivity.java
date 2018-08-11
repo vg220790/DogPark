@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         /////////
-
+        handleUserLogin();
 
         ProgressBar progressBar = findViewById(R.id.progressBar);
         Button userDataBtn      = findViewById(R.id.update_user_data);
@@ -79,30 +80,6 @@ public class MainActivity extends AppCompatActivity {
         username                = findViewById(R.id.username);
         dogName                 = findViewById(R.id.dogname);
         dogInfo                 = findViewById(R.id.dogInfo);
-
-        //get current user
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-
-        //get firebase auth instance
-        auth                    = FirebaseAuth.getInstance();
-        databaseUserProfiles    = FirebaseDatabase.getInstance().getReference("UserProfiles");
-
-        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    finish();
-                }
-            }
-        };
-
-        getCurrentUserProfile(user);
-
 
         GPSService();
 
@@ -135,6 +112,37 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }//end of onCreate
+
+    private void handleUserLogin(){
+        //get current user
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        //get firebase auth instance
+        auth                    = FirebaseAuth.getInstance();
+        databaseUserProfiles    = FirebaseDatabase.getInstance().getReference("UserProfiles");
+
+        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user == null) {
+                    // user auth state is changed - user is null
+                    // launch login activity
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    finish();
+                }
+            }
+        };
+
+        getCurrentUserProfile(user);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //wait for user info
+            }
+        }, 400);
+    }
 
 
     private void getCurrentUserProfile(FirebaseUser user){

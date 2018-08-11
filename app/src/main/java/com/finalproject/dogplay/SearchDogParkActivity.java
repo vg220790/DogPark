@@ -53,8 +53,6 @@ public class SearchDogParkActivity extends AppCompatActivity {
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
                     Playground playground = makePlaygroundFromFB(playgroundSnapshot);
                     playgrounds.add(playground);
-                    //final String playgroundToString = Objects.requireNonNull(playground).toString();
-
                     playgroundsStrList.add(stringForMap(playground));
 
                 }
