@@ -43,21 +43,20 @@ public class SearchDogParkActivity extends AppCompatActivity {
         playgroundsListView = findViewById(R.id.playgrounds_listView);
 
         DatabaseReference databasePlaygrounds = FirebaseDatabase.getInstance().getReference().child("Playgrounds");
-        playgrounds         = new ArrayList<>();
-        playgroundsStrList  = new ArrayList<>();
-        userProfiles        = new ArrayList<>();
 
-        databasePlaygrounds.addListenerForSingleValueEvent(new ValueEventListener() {
+        databasePlaygrounds.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                playgrounds = new ArrayList<>();
+                playgroundsStrList  = new ArrayList<>();
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
                     Playground playground = makePlaygroundFromFB(playgroundSnapshot);
                     playgrounds.add(playground);
                     playgroundsStrList.add(stringForMap(playground));
 
                 }
-                setFragmentBundle();
                 setListView();
+                setFragmentBundle();
             }
 
             @Override
@@ -90,22 +89,21 @@ public class SearchDogParkActivity extends AppCompatActivity {
     private void setFragmentBundle() {
 
         Bundle mapFragBundle = new Bundle();
-
         if (!playgroundsStrList.isEmpty()) {
 
             mapFragBundle.putStringArrayList("EXTRA_PLAYGROUNDS", playgroundsStrList);
         }
-
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        if (fragment != null) {
-            ft.remove(fragment).commit();
-        }
         fragment = new MapFragment();
         fragment.setArguments(mapFragBundle);
-        ft.replace(R.id.playgrounds_mapview_fragment_container, fragment);
-        ft.addToBackStack(null);
-        ft.commit();
+        openFragment(fragment);
+    }
+
+    private void openFragment(final Fragment fragment)   {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.playgrounds_mapview_fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
     }
 
