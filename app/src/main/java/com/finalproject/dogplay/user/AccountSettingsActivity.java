@@ -1,16 +1,18 @@
-package com.finalproject.dogplay;
+package com.finalproject.dogplay.user;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.finalproject.dogplay.R;
+import com.finalproject.dogplay.models.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,22 +23,28 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class AccountSettingsActivity extends AppCompatActivity {
 
-    private Button btnChangeEmail, btnChangePassword, btnSendResetEmail, btnRemoveUser,
-            changeEmail, changePassword, sendEmail, remove, signOut;
+    private Button changeEmail;
+    private Button changePassword;
+    private Button sendEmail;
+    private Button remove;
 
     private EditText oldEmail, newEmail, password, newPassword;
     private ProgressBar progressBar;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
-    DatabaseReference databaseUserProfiles;
-    UserProfile currentUserProfile;
+    private DatabaseReference databaseUserProfiles;
+    private UserProfile currentUserProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_account_settings);
+
 
         //get firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -60,20 +68,20 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
         getCurrentUserProfile(user);
 
-        btnChangeEmail = (Button) findViewById(R.id.change_email_button);
-        btnChangePassword = (Button) findViewById(R.id.change_password_button);
-        btnSendResetEmail = (Button) findViewById(R.id.sending_pass_reset_button);
-        btnRemoveUser = (Button) findViewById(R.id.remove_user_button);
-        changeEmail = (Button) findViewById(R.id.changeEmail);
-        changePassword = (Button) findViewById(R.id.changePass);
-        sendEmail = (Button) findViewById(R.id.send);
-        remove = (Button) findViewById(R.id.remove);
-        signOut = (Button) findViewById(R.id.sign_out);
+        Button btnChangeEmail = findViewById(R.id.change_email_button);
+        Button btnChangePassword = findViewById(R.id.change_password_button);
+        Button btnSendResetEmail = findViewById(R.id.sending_pass_reset_button);
+        Button btnRemoveUser = findViewById(R.id.remove_user_button);
+        changeEmail         = findViewById(R.id.changeEmail);
+        changePassword      = findViewById(R.id.changePass);
+        sendEmail           = findViewById(R.id.send);
+        remove              = findViewById(R.id.remove);
+        Button signOut = findViewById(R.id.sign_out);
 
-        oldEmail = (EditText) findViewById(R.id.old_email);
-        newEmail = (EditText) findViewById(R.id.new_email);
-        password = (EditText) findViewById(R.id.password);
-        newPassword = (EditText) findViewById(R.id.newPassword);
+        oldEmail            = findViewById(R.id.old_email);
+        newEmail            = findViewById(R.id.new_email);
+        password            = findViewById(R.id.password);
+        newPassword         = findViewById(R.id.newPassword);
 
         oldEmail.setVisibility(View.GONE);
         newEmail.setVisibility(View.GONE);
@@ -84,7 +92,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         sendEmail.setVisibility(View.GONE);
         remove.setVisibility(View.GONE);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
 
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
@@ -255,14 +263,14 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     }//end of onCreate
 
-    public void getCurrentUserProfile(FirebaseUser user){
+    private void getCurrentUserProfile(FirebaseUser user){
         final String current_userID = user.getUid();
         databaseUserProfiles.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot profilesSnapshot: dataSnapshot.getChildren()){
                     UserProfile userProfile = profilesSnapshot.getValue(UserProfile.class);
-                    if (userProfile.getuID().equals(current_userID))
+                    if (Objects.requireNonNull(userProfile).getuID().equals(current_userID))
                         currentUserProfile = userProfile;
                 }
 
@@ -277,7 +285,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     }
 
     //sign out method
-    public void signOut() {
+    private void signOut() {
         auth.signOut();
     }
 

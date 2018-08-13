@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -33,7 +34,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Owner Name"
+                android:text=""
                 android:textSize="25dp" />
 
             <TextView
@@ -42,7 +43,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Dog Name"
+                android:text=""
                 android:textSize="25dp" />
         </LinearLayout>
 
@@ -52,8 +53,8 @@
             android:layout_height="34dp"
             android:layout_marginTop="10dip"
             android:background="@null"
-            android:text="UPDATE USER PROFILE?"
-            android:textAllCaps="false"
+            android:text="@string/update_profile"
+            android:textAllCaps="true"
             android:textColor="@color/colorAccent"
             android:textSize="15dp" />
 
@@ -62,7 +63,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="15dip"
             android:gravity="center"
-            android:text="DOG DESCRIPTION"
+            android:text="@string/dog_description"
             android:textColor="@color/white"
             android:textSize="25dp" />
 
@@ -72,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dip"
             android:gravity="center"
-            android:text="add description here"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="25dp" />
 
@@ -83,7 +84,7 @@
             android:layout_marginTop="80dp"
             android:layout_gravity="center_horizontal"
             android:background="@color/white"
-            android:text="FIND ME A DOGGY PLAYGROUND"
+            android:text="@string/find_playground"
             android:textStyle="bold"
             android:textSize="30dp"
             android:textColor="@color/colorPrimaryDark"/>
@@ -94,8 +95,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@null"
-            android:text="CHANGE ACCOUNT SETTINGS?"
-            android:textAllCaps="false"
+            android:text="@string/change_account"
+            android:textAllCaps="true"
             android:textSize="15dp"
             android:textColor="@color/colorAccent"/>
 

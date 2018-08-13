@@ -1,6 +1,7 @@
-package com.finalproject.dogplay;
+package com.finalproject.dogplay.user;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,7 +14,11 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
+import com.finalproject.dogplay.MainActivity;
+import com.finalproject.dogplay.R;
+import com.finalproject.dogplay.models.UserProfile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,17 +30,16 @@ import com.google.firebase.database.ValueEventListener;
 public class FirstUserProfileActivity extends AppCompatActivity {
 
     private Intent intentToMain;
-    private FirebaseAuth.AuthStateListener authListener;
-    private FirebaseAuth auth;
-    DatabaseReference databaseUserProfiles;
+    private DatabaseReference databaseUserProfiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_user_profile);
 
         //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         databaseUserProfiles = FirebaseDatabase.getInstance().getReference("UserProfiles");
 
         final EditText uNameET = findViewById(R.id.uName);
@@ -82,13 +86,13 @@ public class FirstUserProfileActivity extends AppCompatActivity {
         });
     }
 
-    protected UserProfile makeNewUserData(String uName, String dName, RadioGroup dSizeRG
+    private UserProfile makeNewUserData(String uName, String dName, RadioGroup dSizeRG
             , CheckBox friendlyCB, CheckBox playfulCB, CheckBox goodWithPeopleCB){
 
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        final String current_userID = user.getUid();
+        final String current_userID = Objects.requireNonNull(user).getUid();
         String email = user.getEmail();
 
         UserProfile newUserProfile = new UserProfile(current_userID, email);
@@ -104,9 +108,9 @@ public class FirstUserProfileActivity extends AppCompatActivity {
 
     }
 
-    protected  ArrayList<String> dogDescription(RadioGroup dSizeRG,
-                                                CheckBox friendlyCB, CheckBox playfulCB,
-                                                CheckBox goodWithPeopleCB){
+    private ArrayList<String> dogDescription(RadioGroup dSizeRG,
+                                             CheckBox friendlyCB, CheckBox playfulCB,
+                                             CheckBox goodWithPeopleCB){
         ArrayList<String> dDescription = new ArrayList<>();
         //dog size
         dDescription.add(((RadioButton)findViewById(dSizeRG.getCheckedRadioButtonId()))
@@ -121,13 +125,11 @@ public class FirstUserProfileActivity extends AppCompatActivity {
         return  dDescription;
     }
 
-    protected void addUserToFireBase(final UserProfile newUserProfile){
+    private void addUserToFireBase(final UserProfile newUserProfile){
         databaseUserProfiles.addListenerForSingleValueEvent(new ValueEventListener(){
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-//                database.child("UserProfiles").push().setValue(newUserProfile);
                 databaseUserProfiles.child(newUserProfile.getuID()).setValue(newUserProfile);
                 Toast.makeText(getApplicationContext(),R.string.registration_complete, Toast.LENGTH_LONG).show();
                 startActivity(intentToMain);

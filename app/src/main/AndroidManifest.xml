@@ -22,27 +22,34 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
-            android:label="@string/app_name">
+        <activity android:name=".user.LoginActivity">
+            android:label="@string/app_name"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".ResetPasswordActivity" />
+        <activity android:name=".user.SignupActivity" />
+        <activity android:name=".user.ResetPasswordActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".UserProfileActivity" />
-        <activity android:name=".AccountSettingsActivity" />
-        <activity android:name=".FirstUserProfileActivity" />
+        <activity android:name=".user.UserProfileActivity" />
+        <activity android:name=".user.AccountSettingsActivity" />
+        <activity android:name=".user.FirstUserProfileActivity" />
         <activity android:name=".SearchDogParkActivity" />
+        <activity android:name=".ViewPlaygroundActivity" />
 
+        <!--Vica's api android:value="AIzaSyCuGCmdF_6EwjlLGCMUU0bEiMrWtGBwQNI" -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCuGCmdF_6EwjlLGCMUU0bEiMrWtGBwQNI" />
+            android:value="AIzaSyBBFiKEVldrXLtwY-ssJCDXencvv3BvB68"
+        />
 
-        <activity android:name=".ViewPlaygroundActivity"></activity>
+        <service
+            android:name=".service.BackgroundService"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>
