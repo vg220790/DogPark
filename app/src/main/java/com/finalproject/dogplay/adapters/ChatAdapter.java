@@ -1,7 +1,6 @@
 package com.finalproject.dogplay.adapters;
 
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
