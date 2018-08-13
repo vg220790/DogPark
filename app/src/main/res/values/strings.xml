@@ -30,6 +30,12 @@
     <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
     <string name="registration_complete">New user data added</string>
 
+    <string name="change_account">CHANGE ACCOUNT SETTINGS?</string>
+    <string name="update_profile">UPDATE USER PROFILE?</string>
+    <string name="dog_description">DOG DESCRIPTION</string>
+    <string name="find_playground">FIND ME A DOGGY PLAYGROUND</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

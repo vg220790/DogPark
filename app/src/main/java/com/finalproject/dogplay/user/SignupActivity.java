@@ -1,5 +1,6 @@
 package com.finalproject.dogplay.user;
 
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -30,10 +31,13 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_signup);
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         DatabaseReference databaseUserProfiles = FirebaseDatabase.getInstance().getReference("UserProfiles");
 

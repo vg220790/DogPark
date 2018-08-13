@@ -1,5 +1,6 @@
 package com.finalproject.dogplay;
 
+import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,8 @@ public class ViewPlaygroundActivity extends AppCompatActivity implements Activit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_view_playground);
 
         playgroundName = getIntent().getStringExtra("EXTRA_SELECTED_PLAYGROUND");
