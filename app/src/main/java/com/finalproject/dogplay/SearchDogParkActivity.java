@@ -33,27 +33,39 @@ public class SearchDogParkActivity extends AppCompatActivity {
     private ArrayList<String> playgroundsStrList;
     private ArrayList<UserProfile> userProfiles;
 
+    private boolean inActivity;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        inActivity = true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_dog_park);
         playgroundsListView = findViewById(R.id.playgrounds_listView);
 
+        inActivity = true;
+
         DatabaseReference databasePlaygrounds = FirebaseDatabase.getInstance().getReference().child("Playgrounds");
 
         databasePlaygrounds.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                playgrounds = new ArrayList<>();
-                playgroundsStrList  = new ArrayList<>();
-                for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
-                    Playground playground = makePlaygroundFromFB(playgroundSnapshot);
-                    playgrounds.add(playground);
-                    playgroundsStrList.add(stringForMap(playground));
+                if(inActivity) {
+                    playgrounds = new ArrayList<>();
+                    playgroundsStrList = new ArrayList<>();
+                    for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
+                        Playground playground = makePlaygroundFromFB(playgroundSnapshot);
+                        playgrounds.add(playground);
+                        playgroundsStrList.add(stringForMap(playground));
 
+                    }
+                    setListView();
+                    setFragmentBundle();
                 }
-                setListView();
-                setFragmentBundle();
             }
 
             @Override
@@ -63,6 +75,7 @@ public class SearchDogParkActivity extends AppCompatActivity {
         });
 
     }// end of onCreate
+
 
     private String stringForMap(Playground playground){
         return playground.getAddress() + "### " +  playground.getLatitude() + "### "
@@ -104,6 +117,7 @@ public class SearchDogParkActivity extends AppCompatActivity {
 
     }
 
+
     private void setListView() {
 
         PlaygroundsList adapter = new PlaygroundsList(SearchDogParkActivity.this, playgrounds);
@@ -116,8 +130,12 @@ public class SearchDogParkActivity extends AppCompatActivity {
                 intent.putExtra("EXTRA_SELECTED_PLAYGROUND", (playgrounds.get(position)).getAddress());
                 intent.putExtra("EXTRA_PLAYGROUND_ID", (playgrounds.get(position)).getId());
                 startActivity(intent);
+                inActivity = false;
+                finish();
+
             }
         });
+
 
     }
 

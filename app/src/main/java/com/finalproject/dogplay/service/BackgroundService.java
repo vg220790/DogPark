@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.finalproject.dogplay.models.UserProfile;
 import com.google.firebase.auth.FirebaseAuth;
@@ -163,9 +164,7 @@ public class BackgroundService extends Service {
             lat = location.getLatitude();
             lon = location.getLongitude();
             Log.i(TAG,"Location Changed: " + lat + " " + lon);
-            //TODO
             mangeUsers(lat, lon);
-
             Intent i = new Intent("location_update");
             i.putExtra("location",location);
             sendBroadcast(i);
