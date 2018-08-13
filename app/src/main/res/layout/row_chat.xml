@@ -11,42 +11,46 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:background="@android:color/white"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorPrimary"
         card_view:cardCornerRadius="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            android:weightSum="2">
 
             <TextView
                 android:id="@+id/item_username"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:paddingStart="3dp"
-                android:paddingLeft="3dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:paddingEnd="0dp"
+                android:paddingLeft="3dp"
                 android:paddingRight="0dp"
+                android:paddingStart="3dp"
                 android:text=""
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/item_message"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginTop="3dp"
-                android:paddingStart="3dp"
-                android:paddingLeft="3dp"
+                android:layout_weight="1"
                 android:paddingEnd="0dp"
+                android:paddingLeft="3dp"
                 android:paddingRight="0dp"
+                android:paddingStart="3dp"
                 android:text=""
-                android:textSize="12sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 

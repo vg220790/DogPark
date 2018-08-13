@@ -1,6 +1,11 @@
 package com.finalproject.dogplay.adapters;
 
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +13,14 @@ import android.widget.TextView;
 
 import com.finalproject.dogplay.R;
 import com.finalproject.dogplay.models.ChatData;
+import com.finalproject.dogplay.models.UserProfile;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,10 +69,52 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ChatViewHolder holder, int position) {
-        ChatData data = mContent.get(position);
+    public void onBindViewHolder(final ChatViewHolder holder, int position) {
+        final ChatData data = mContent.get(position);
+        loadUser();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(myUserProfile.getuName().equals(data.getName())){
+                    holder.message.setText(data.getMessage());
+                    holder.message.setGravity(Gravity.RIGHT);
+                    holder.name.setText(data.getName());
+                    holder.name.setBackgroundColor(Color.BLUE);
+                }
+                else    {
+                    holder.message.setText(data.getMessage());
+                    holder.name.setText(data.getName());
+                    holder.message.setGravity(Gravity.LEFT);
+                    holder.name.setTextColor(Color.BLACK);
+                    holder.name.setBackgroundColor(Color.WHITE);
+                }
+            }
+        }, 500);
 
-        holder.message.setText(data.getMessage());
-        holder.name.setText(data.getName());
+
+    }
+    private DatabaseReference userProfileRef;
+    private UserProfile myUserProfile;
+
+    private void loadUser(){
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String mUserId = user.getUid();
+        userProfileRef= FirebaseDatabase.getInstance().getReference().child("UserProfiles");
+        userProfileRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
+                {
+                    if(mUserId.equals(userSnapshot.child("uID").getValue())) {
+                        myUserProfile = userSnapshot.getValue(UserProfile.class);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
