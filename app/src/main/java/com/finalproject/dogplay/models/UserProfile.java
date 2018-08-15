@@ -22,13 +22,14 @@ public class UserProfile {
     private ArrayList<String> dFriends;
 
     //list of dog our dog don't like
-    private ArrayList<String> dEnemy;
+    private ArrayList<String> dEnemies;
 
     public UserProfile() { }
 
     public UserProfile(String id, String email) {
         setuID(id);
         setuEMail(email);
+        checkLists();
     }
 
     public String getuID() {
@@ -67,18 +68,38 @@ public class UserProfile {
     }
     public void setdDescription(ArrayList<String> dDescription) {
         this.dDescription = dDescription;
+
     }
     public ArrayList<String> getdFriends() {
         return dFriends;
     }
-    public void setdFriends(ArrayList<String> dFriends) {
+
+    public void setDogFriendsList(ArrayList<String> dFriends) {
         this.dFriends = dFriends;
     }
-    public ArrayList<String> getdEnemy() {
-        return dEnemy;
+
+    public ArrayList<String> getdEnemies() {
+        return dEnemies;
     }
-    public void setdEnemy(ArrayList<String> dEnemy) {
-        this.dEnemy = dEnemy;
+
+    public void setDogEnemiesList(ArrayList<String> dEnemy) {
+        this.dEnemies = dEnemy;
+    }
+
+    public void setFriend(String friend) {
+        checkLists();
+        if (this.dEnemies.contains(friend))
+            this.dEnemies.remove(friend);
+        if (!this.dFriends.contains(friend))
+            this.dFriends.add(friend);
+    }
+
+    public void setEnemy(String enemy) {
+        checkLists();
+        if (this.getdFriends().contains(enemy))
+            this.dFriends.remove(enemy);
+        if (!this.dEnemies.contains(enemy))
+            this.dEnemies.add(enemy);
     }
 
     @Override
@@ -88,5 +109,13 @@ public class UserProfile {
             s.append(attribute).append(" ");
         }
         return s.substring(0, s.length() - 1); // return a substring to remove only the last space (" ") of the string
+    }
+
+    public void checkLists() {
+        if (this.dFriends == null)
+            dFriends = new ArrayList<String>();
+
+        if (this.dEnemies == null)
+            dEnemies = new ArrayList<String>();
     }
 }

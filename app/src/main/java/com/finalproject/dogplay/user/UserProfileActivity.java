@@ -115,6 +115,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     if (userProfile.getuID().equals(current_userID)) {
                         currentUserProfile = userProfile;
                     }
+                }
 
                     currentUserProfile.setuName(username);
                     currentUserProfile.setdName(dogname);
@@ -124,7 +125,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     databaseUserProfiles.child(currentUserProfile.getuID()).setValue(currentUserProfile);
                     Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();
                     startActivity(intentToMain);
-                }
+
             }
 
             @Override
