@@ -35,6 +35,19 @@
     <string name="dog_description">DOG DESCRIPTION</string>
     <string name="find_playground">FIND ME A DOGGY PLAYGROUND</string>
 
+    <string name="user_data">User Profile Page</string>
+    <string name="user_name">Your Username here</string>
+    <string name="dog_name">Your dogs name here</string>
+    <string name="dog_size">Mark your dogs size</string>
+    <string name="small">Small size</string>
+    <string name="medium">Medium size</string>
+    <string name="big">Big size</string>
+    <string name="attributes">Mark your dogs attributes</string>
+    <string name="friendly">Friendly</string>
+    <string name="playful">Playful</string>
+    <string name="gWithPeople">Good With People</string>
+    <string name="save">Save Data!</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

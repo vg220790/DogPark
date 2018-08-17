@@ -23,7 +23,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="user_data" />
+            android:text="@string/user_data" />
 
         <EditText
             android:id="@+id/uName"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="user_name" />
+            android:text="@string/user_name" />
 
         <EditText
             android:id="@+id/dName"
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="dog_name" />
+            android:text="@string/dog_name" />
 
 
         <RadioGroup
@@ -53,53 +53,53 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="dog_size" />
+                android:text="@string/dog_size" />
 
             <RadioButton
                 android:id="@+id/small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="small" />
+                android:text="@string/small" />
 
             <RadioButton
                 android:id="@+id/medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="medium" />
+                android:text="@string/medium" />
 
             <RadioButton
                 android:id="@+id/big"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="big" />
+                android:text="@string/big" />
         </RadioGroup>
 
         <TextView
             android:id="@+id/dogInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="attributes" />
+            android:text="@string/attributes" />
 
         <CheckBox
             android:id="@+id/isFriendly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="friendly" />
+            android:text="@string/friendly" />
 
         <CheckBox
             android:id="@+id/isPlayful"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="playful" />
+            android:text="@string/playful" />
 
         <CheckBox
             android:id="@+id/isGoodWithPeople"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="gWithPeople" />
+            android:text="@string/gWithPeople" />
 
 
     </LinearLayout>
@@ -112,7 +112,7 @@
         android:layout_marginEnd="148dp"
         android:layout_marginStart="148dp"
         android:layout_marginTop="50dp"
-        android:text="Save"
+        android:text="@string/Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
