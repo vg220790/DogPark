@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference databaseUserProfiles;
     private UserProfile currentUserProfile;
 
-    String user_name, dog_name;
+    static String user_name, dog_name;
     ArrayList<String> dog_description;
 
 
@@ -86,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init();
         //////
-
-        /////////
         handleUserLogin();
 
         ProgressBar progressBar = findViewById(R.id.progressBar);
@@ -169,11 +167,14 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot profilesSnapshot: dataSnapshot.getChildren()){
                     UserProfile userProfile = profilesSnapshot.getValue(UserProfile.class);
-                    if (Objects.requireNonNull(userProfile).getuID().equals(current_userID))
+                    if (Objects.requireNonNull(userProfile).getuID().equals(current_userID)) {
                         currentUserProfile = userProfile;
+                        user_name = userProfile.getuName();
+                    }
+
                 }
                 if (currentUserProfile == null) //start UserProfile Activity
-                    startActivity(new Intent(MainActivity.this, FirstUserProfileActivity.class));
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 else
                     showData();
 
@@ -197,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
             dogName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
         username.setText(user_name);
         dogName.setText(dog_name);
+        OneSignal.sendTag("user_email", currentUserProfile.getuEMail());
         showDogDescription();
     }
 
