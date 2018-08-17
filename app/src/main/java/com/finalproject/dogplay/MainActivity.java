@@ -37,6 +37,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference databaseUserProfiles;
     private UserProfile currentUserProfile;
+
+    String user_name, dog_name;
+    ArrayList<String> dog_description;
 
 
     private TextView username, dogName, dogInfo;
@@ -162,8 +166,11 @@ public class MainActivity extends AppCompatActivity {
                     //start UserProfile Activity
                     startActivity(new Intent(MainActivity.this, FirstUserProfileActivity.class));
                 }else{
-                    username.setText(currentUserProfile.getuName());
-                    dogName.setText(currentUserProfile.getdName());
+                    user_name = currentUserProfile.getuName();
+                    dog_name = currentUserProfile.getdName();
+
+                    username.setText(user_name);
+                    dogName.setText(dog_name);
                     showDogDescription();
                     //openChat();
                 }
@@ -180,11 +187,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void showDogDescription(){
         //firstly getting mandatory attribute of dog's size
-        StringBuilder dogsInfo = new StringBuilder("size: " + currentUserProfile.getdDescription().get(0) + "\n");
+        StringBuilder dogsInfo = new StringBuilder("size: " + currentUserProfile.getdDescription().get(0));
         for (String attribute: currentUserProfile.getdDescription().subList(1,(currentUserProfile.getdDescription().size())))
             dogsInfo.append("\n").append(attribute);
-
         this.dogInfo.setText(dogsInfo.toString());
+        dog_description = currentUserProfile.getdDescription();
     }
 
     //sign out method
