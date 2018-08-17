@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -162,18 +163,11 @@ public class MainActivity extends AppCompatActivity {
                     if (Objects.requireNonNull(userProfile).getuID().equals(current_userID))
                         currentUserProfile = userProfile;
                 }
-                if (currentUserProfile == null){
-                    //start UserProfile Activity
+                if (currentUserProfile == null) //start UserProfile Activity
                     startActivity(new Intent(MainActivity.this, FirstUserProfileActivity.class));
-                }else{
-                    user_name = currentUserProfile.getuName();
-                    dog_name = currentUserProfile.getdName();
+                else
+                    showData();
 
-                    username.setText(user_name);
-                    dogName.setText(dog_name);
-                    showDogDescription();
-                    //openChat();
-                }
 
             }
 
@@ -185,11 +179,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void showData(){
+        user_name = currentUserProfile.getuName();
+        dog_name = currentUserProfile.getdName();
+        if(user_name.length() > 10 )
+            username.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
+        if(dogName.length() > 10 )
+            dogName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
+        username.setText(user_name);
+        dogName.setText(dog_name);
+        showDogDescription();
+    }
+
     private void showDogDescription(){
         //firstly getting mandatory attribute of dog's size
-        StringBuilder dogsInfo = new StringBuilder("size: " + currentUserProfile.getdDescription().get(0));
+        StringBuilder dogsInfo = new StringBuilder("Dogs size: " + currentUserProfile.getdDescription().get(0));
         for (String attribute: currentUserProfile.getdDescription().subList(1,(currentUserProfile.getdDescription().size())))
-            dogsInfo.append("\n").append(attribute);
+            dogsInfo.append("\nIt is ").append(attribute);
         this.dogInfo.setText(dogsInfo.toString());
         dog_description = currentUserProfile.getdDescription();
     }
