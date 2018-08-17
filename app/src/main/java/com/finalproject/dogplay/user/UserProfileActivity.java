@@ -111,19 +111,16 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 for (DataSnapshot profilesSnapshot : dataSnapshot.getChildren()) {
                     UserProfile userProfile = profilesSnapshot.getValue(UserProfile.class);
-                    String id = Objects.requireNonNull(userProfile).getuID();
+
                     if (userProfile.getuID().equals(current_userID)) {
                         currentUserProfile = userProfile;
+                        currentUserProfile.setuName(username);
+                        currentUserProfile.setdName(dogname);
+                        currentUserProfile.setdDescription(dogDescription(dSizeRG, friendlyCB, playfulCB, goodWithPeopleCB));
+                        databaseUserProfiles.child(currentUserProfile.getuID()).setValue(currentUserProfile);
+                        Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();
+                        startActivity(intentToMain);
                     }
-
-                    currentUserProfile.setuName(username);
-                    currentUserProfile.setdName(dogname);
-                    currentUserProfile.setdDescription(dogDescription(dSizeRG,friendlyCB,playfulCB, goodWithPeopleCB));
-
-
-                    databaseUserProfiles.child(currentUserProfile.getuID()).setValue(currentUserProfile);
-                    Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();
-                    startActivity(intentToMain);
                 }
             }
 
@@ -155,54 +152,7 @@ public class UserProfileActivity extends AppCompatActivity {
         return  dDescription;
     }
 
-/*
-    protected void setCurrentUserProfile(final FirebaseUser user){
-        final String current_userID = user.getUid();
 
-        databaseUserProfiles.addListenerForSingleValueEvent(new ValueEventListener(){
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot profilesSnapshot: dataSnapshot.getChildren()){
-                    UserProfile userProfile = profilesSnapshot.getValue(UserProfile.class);
-                    String id = userProfile.getuID();
-                    if (userProfile.getuID().equals(current_userID)){
-                        currentUserProfile = userProfile;
-                    }
-
-                }
-                if (currentUserProfile == null){
-                    //start UserProfile Activity
-                    startActivity(new Intent(UserProfileActivity.this, LoginActivity.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "on Canceled", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        uNameET.setText(uname);
-        dNameET.setText(dname);
-
-        if (currentUserProfile.getdDescription().contains("small"))
-            (findViewById(R.id.small)).setSelected(true);
-        else if (currentUserProfile.getdDescription().contains("medium"))
-            (findViewById(R.id.medium)).setSelected(true);
-        else if (currentUserProfile.getdDescription().contains("big"))
-            (findViewById(R.id.big)).setSelected(true);
-
-        if (currentUserProfile.getdDescription().contains("friendly"))
-            friendlyCB.setChecked(true);
-        if (currentUserProfile.getdDescription().contains("playful"))
-            playfulCB.setChecked(true);
-        if (currentUserProfile.getdDescription().contains("gWithPeople"))
-            goodWithPeopleCB.setChecked(true);
-
-
-    }
- */
 
     private void showCurrentUserData(){
         uNameET.setText(userName);
