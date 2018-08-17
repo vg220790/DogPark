@@ -29,7 +29,7 @@
         android:layout_marginEnd="-11dp"
         android:background="@color/colorAccent"
         android:text="tag as friend"
-        android:textSize="10dp" />
+        android:textSize="10sp" />
 
     <Button
         android:id="@+id/enemy_button"
@@ -41,7 +41,7 @@
         android:layout_toEndOf="@+id/friend_button"
         android:background="@color/colorPrimaryDark"
         android:text="tag as enemy"
-        android:textSize="10dp" />
+        android:textSize="10sp" />
 
 
 </RelativeLayout>

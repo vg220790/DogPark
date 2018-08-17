@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -35,7 +34,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text=""
-                android:textSize="25dp" />
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/dogname"
@@ -44,19 +43,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text=""
-                android:textSize="25dp" />
+                android:textSize="25sp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/update_user_data"
-            android:layout_width="fill_parent"
-            android:layout_height="34dp"
-            android:layout_marginTop="10dip"
-            android:background="@null"
-            android:text="@string/update_profile"
-            android:textAllCaps="true"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -65,17 +54,17 @@
             android:gravity="center"
             android:text="@string/dog_description"
             android:textColor="@color/white"
-            android:textSize="25dp" />
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/dogInfo"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dip"
-            android:gravity="center"
+            android:gravity="left"
             android:text=""
             android:textColor="@color/white"
-            android:textSize="25dp" />
+            android:textSize="25sp" />
 
         <Button
             android:id="@+id/findPlayground"
@@ -86,8 +75,20 @@
             android:background="@color/white"
             android:text="@string/find_playground"
             android:textStyle="bold"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:textColor="@color/colorPrimaryDark"/>
+
+
+        <Button
+            android:id="@+id/update_user_data"
+            android:layout_width="fill_parent"
+            android:layout_height="34dp"
+            android:layout_marginTop="10dip"
+            android:background="@null"
+            android:text="@string/update_profile"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp" />
 
         <Button
             android:id="@+id/update_account_settings"
@@ -97,7 +98,7 @@
             android:background="@null"
             android:text="@string/change_account"
             android:textAllCaps="true"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
