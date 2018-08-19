@@ -73,7 +73,7 @@ public class SearchDogParkActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                throw databaseError.toException();
+                //throw databaseError.toException();
             }
         });
 

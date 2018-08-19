@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -23,7 +25,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
 
 public class BackgroundService extends Service {
@@ -47,14 +55,16 @@ public class BackgroundService extends Service {
     private DatabaseReference userProfileRef;
     private UserProfile myUserProfile;
 
-
     @Override
     public void onCreate() {
         super.onCreate();
         Log.i(TAG,"service created");
         Context context = this;
         this.isRunning = false;
+
+        //background service will not work (app will crash) if firebase user logged out
         loadUser();
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -164,6 +174,7 @@ public class BackgroundService extends Service {
             lat = location.getLatitude();
             lon = location.getLongitude();
             Log.i(TAG,"Location Changed: " + lat + " " + lon);
+
             mangeUsers(lat, lon);
             Intent i = new Intent("location_update");
             i.putExtra("location",location);
@@ -220,6 +231,7 @@ public class BackgroundService extends Service {
     }
 
     private void mangeUsers(final double lat , final double lon){
+
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String mUserId = user.getUid();
 
@@ -230,15 +242,19 @@ public class BackgroundService extends Service {
 
                 for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
 
+                    String playgroundName = (String) playgroundSnapshot.child("address").getValue();
+
                     double currentPlaygroundLat  = (Double) playgroundSnapshot.child("latitude").getValue();
                     double currentPlaygroundLon  = (Double) playgroundSnapshot.child("longitude").getValue();
 
                     boolean userIsInsideThePlayground = playgroundSnapshot.child("visitors").toString().contains("uID="+mUserId);
+
                     boolean inRange = inRange(currentPlaygroundLat, currentPlaygroundLon , lat, lon);
+                    //Toast.makeText(getApplicationContext(), "inRange = " + inRange, Toast.LENGTH_SHORT).show();
                     if(inRange){
                         //if user is already in the playground we won't add him
                         if(!userIsInsideThePlayground)
-                            mangeUserInRange(playgroundSnapshot.getKey());
+                            mangeUserInRange(playgroundSnapshot.getKey(), playgroundName, mUserId);
                     } else {
                         //if user left the garden we will remove him
                         if(userIsInsideThePlayground)
@@ -254,8 +270,11 @@ public class BackgroundService extends Service {
         });
     }
 
-    private void mangeUserInRange(String playgroundID){
+    private void mangeUserInRange(String playgroundID, String playgroundName, String mUserId) {
         playgrounds.child(playgroundID).child("visitors").push().child("userProfile").setValue(myUserProfile);
+        //playgrounds.child(playgroundID).child("visitors").child(mUserId).setValue(myUserProfile);
+        //send notification to all the followers
+        notifyAllFollowers(playgroundName);
     }
 
     private void mangeUserNotInRange(DataSnapshot playgroundSnapshot, String userId , String playgroundID){
@@ -264,6 +283,78 @@ public class BackgroundService extends Service {
                 playgrounds.child(playgroundID).child("visitors").child(userToCheck.getKey()).setValue(null);
         }
 
+    }
+
+    private void notifyAllFollowers(String playgroundName) {
+        myUserProfile.checkLists();
+        for (String follower_email : myUserProfile.getFollowers()) {
+            sendNotification(follower_email, playgroundName);
+        }
+
+    }
+
+    private void sendNotification(final String follower_email, final String playgroundName) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                int SDK_INT = android.os.Build.VERSION.SDK_INT;
+                if (SDK_INT > 8) {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                            .permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+
+                    try {
+                        String jsonResponse;
+
+                        URL url = new URL("https://onesignal.com/api/v1/notifications");
+                        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                        con.setUseCaches(false);
+                        con.setDoOutput(true);
+                        con.setDoInput(true);
+
+                        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                        con.setRequestProperty("Authorization", "Basic Y2MwMThjZjUtOTZiYS00ZTgyLWI0ZGEtZmNiYzFmYmU3YTc1");
+                        con.setRequestMethod("POST");
+
+                        String strJsonBody = "{"
+                                + "\"app_id\": \"7817bdf4-af44-444d-a472-49c5c068b600\","
+
+                                + "\"filters\": [{\"field\": \"tag\", \"key\": \"user_email\", \"relation\": \"=\", \"value\": \"" + follower_email + "\"}],"
+
+                                + "\"data\": {\"foo\": \"bar\"},"
+                                + "\"contents\": {\"en\": \"Your friend" + myUserProfile.getuName() + "just entered " + playgroundName + "\"}"
+                                + "}";
+
+
+                        System.out.println("strJsonBody:\n" + strJsonBody);
+
+                        byte[] sendBytes = strJsonBody.getBytes("UTF-8");
+                        con.setFixedLengthStreamingMode(sendBytes.length);
+
+                        OutputStream outputStream = con.getOutputStream();
+                        outputStream.write(sendBytes);
+
+                        int httpResponse = con.getResponseCode();
+                        System.out.println("httpResponse: " + httpResponse);
+
+                        if (httpResponse >= HttpURLConnection.HTTP_OK
+                                && httpResponse < HttpURLConnection.HTTP_BAD_REQUEST) {
+                            Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
+                            jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                            scanner.close();
+                        } else {
+                            Scanner scanner = new Scanner(con.getErrorStream(), "UTF-8");
+                            jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                            scanner.close();
+                        }
+                        System.out.println("jsonResponse:\n" + jsonResponse);
+
+                    } catch (Throwable t) {
+                        t.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
 }

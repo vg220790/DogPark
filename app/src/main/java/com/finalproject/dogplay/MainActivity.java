@@ -10,9 +10,11 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Build;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -39,8 +41,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.onesignal.OneSignal;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -206,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         //firstly getting mandatory attribute of dog's size
         StringBuilder dogsInfo = new StringBuilder("Dogs size: " + currentUserProfile.getdDescription().get(0));
         for (String attribute: currentUserProfile.getdDescription().subList(1,(currentUserProfile.getdDescription().size())))
-            dogsInfo.append("\nIt is ").append(attribute);
+            dogsInfo.append("\n").append(attribute);
         this.dogInfo.setText(dogsInfo.toString());
         dog_description = currentUserProfile.getdDescription();
     }
@@ -269,6 +275,70 @@ public class MainActivity extends AppCompatActivity {
 
     public UserProfile getCurrentUserProfile(){
         return currentUserProfile;
+    }
+
+    public static void sendNotification(final String follower_email) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                int SDK_INT = android.os.Build.VERSION.SDK_INT;
+                if (SDK_INT > 8) {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                            .permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+
+                    try {
+                        String jsonResponse;
+
+                        URL url = new URL("https://onesignal.com/api/v1/notifications");
+                        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                        con.setUseCaches(false);
+                        con.setDoOutput(true);
+                        con.setDoInput(true);
+
+                        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                        con.setRequestProperty("Authorization", "Basic Y2MwMThjZjUtOTZiYS00ZTgyLWI0ZGEtZmNiYzFmYmU3YTc1");
+                        con.setRequestMethod("POST");
+
+                        String strJsonBody = "{"
+                                + "\"app_id\": \"7817bdf4-af44-444d-a472-49c5c068b600\","
+
+                                + "\"filters\": [{\"field\": \"tag\", \"key\": \"user_email\", \"relation\": \"=\", \"value\": \"" + follower_email + "\"}],"
+
+                                + "\"data\": {\"foo\": \"bar\"},"
+                                + "\"contents\": {\"en\": \"English Message\"}"
+                                + "}";
+
+
+                        System.out.println("strJsonBody:\n" + strJsonBody);
+
+                        byte[] sendBytes = strJsonBody.getBytes("UTF-8");
+                        con.setFixedLengthStreamingMode(sendBytes.length);
+
+                        OutputStream outputStream = con.getOutputStream();
+                        outputStream.write(sendBytes);
+
+                        int httpResponse = con.getResponseCode();
+                        System.out.println("httpResponse: " + httpResponse);
+
+                        if (httpResponse >= HttpURLConnection.HTTP_OK
+                                && httpResponse < HttpURLConnection.HTTP_BAD_REQUEST) {
+                            Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
+                            jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                            scanner.close();
+                        } else {
+                            Scanner scanner = new Scanner(con.getErrorStream(), "UTF-8");
+                            jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                            scanner.close();
+                        }
+                        System.out.println("jsonResponse:\n" + jsonResponse);
+
+                    } catch (Throwable t) {
+                        t.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
 

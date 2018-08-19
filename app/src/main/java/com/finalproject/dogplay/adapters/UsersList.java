@@ -27,9 +27,9 @@ public class UsersList extends ArrayAdapter<UserProfile> {
 
     private final Activity CONTEXT;
     private final List<UserProfile> USERS;
-    private final UserProfile current_user;
-    private ArrayList<String> friends;
-    private ArrayList<String> enemies;
+    UserProfile current_user;
+    //private ArrayList<UserProfile> friends;
+    //private ArrayList<UserProfile> enemies;
     ViewHolder viewHolder;
 
     public UsersList(Activity context, List<UserProfile> users, UserProfile current_user) {
@@ -37,33 +37,48 @@ public class UsersList extends ArrayAdapter<UserProfile> {
         this.CONTEXT = context;
         this.USERS = users;
         this.current_user = current_user;
-        setLists();
+
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         final DatabaseReference databaseUserProfiles = FirebaseDatabase.getInstance().getReference("UserProfiles");
         final UserProfile selected_user = USERS.get(position);
+
         ViewHolder mainViewHolder = null;
         if (convertView == null) {
             LayoutInflater inflater = CONTEXT.getLayoutInflater();
             convertView = inflater.inflate(R.layout.users_listview_layout, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.userInfo = convertView.findViewById(R.id.userprofile_textview);
-            current_user.checkLists();
-            if (current_user.getdFriends().contains(selected_user.getuID()))
-                viewHolder.userInfo.setBackgroundColor(Color.parseColor("#80ff00"));
-            if (current_user.getdEnemies().contains(selected_user.getuID()))
-                viewHolder.userInfo.setBackgroundColor(Color.parseColor("#ff0000"));
-            viewHolder.userInfo.setText(selected_user.toString());
+            viewHolder.photo = convertView.findViewById(R.id.user_imageview);
             viewHolder.friend = convertView.findViewById(R.id.friend_button);
             viewHolder.enemy = convertView.findViewById(R.id.enemy_button);
+            //in case lists are null
+            current_user.checkLists();
+            if (selected_user != null) {
+                if (current_user.getdFriends().containsKey(selected_user.getuID()))
+                viewHolder.userInfo.setBackgroundColor(Color.parseColor("#80ff00"));
+                if (current_user.getdEnemies().containsKey(selected_user.getuID()))
+                viewHolder.userInfo.setBackgroundColor(Color.parseColor("#ff0000"));
+            viewHolder.userInfo.setText(selected_user.toString());
+
+
+                if (current_user.getuID().equals(selected_user.getuID())) {
+                    viewHolder.friend.setVisibility(View.GONE);
+                    viewHolder.enemy.setVisibility(View.GONE);
+                    viewHolder.userInfo.setText("YOU: " + selected_user.toString());
+                }
+
             viewHolder.friend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     handleFriendPressed(v, selected_user);
+                    // updating users in firebase
                     databaseUserProfiles.child(current_user.getuID()).setValue(current_user);
+                    databaseUserProfiles.child(selected_user.getuID()).setValue(selected_user);
                 }
             });
 
@@ -71,9 +86,18 @@ public class UsersList extends ArrayAdapter<UserProfile> {
                 @Override
                 public void onClick(View v) {
                     handleEnemyPressed(v, selected_user);
+                    // updating users in firebase
+
                     databaseUserProfiles.child(current_user.getuID()).setValue(current_user);
+                    databaseUserProfiles.child(selected_user.getuID()).setValue(selected_user);
                 }
             });
+            } else {
+                viewHolder.userInfo.setText("PLAYGROUND IS EMPTY");
+                viewHolder.friend.setVisibility(View.GONE);
+                viewHolder.enemy.setVisibility(View.GONE);
+                viewHolder.photo.setVisibility(View.GONE);
+            }
             convertView.setTag(viewHolder);
         } else {
             mainViewHolder = (ViewHolder) convertView.getTag();
@@ -85,17 +109,24 @@ public class UsersList extends ArrayAdapter<UserProfile> {
 
     public void handleFriendPressed(View v, UserProfile selected_user) {
         Button f = (Button) v;
-        if (!this.friends.contains(selected_user.getuID())) {
-            this.friends.add(selected_user.getuID());
-            current_user.setFriend(selected_user.getuID());
+
+        //add as friend
+        if (!current_user.getdFriends().containsKey(selected_user.getuID())) {
+            current_user.setFriend(selected_user);
+            ///////////////
+            handleFollower(selected_user);
+            ///////////////
             Toast.makeText(getContext(), selected_user.getdName() + " added to friends", Toast.LENGTH_LONG).show();
             f.setText("FRIEND");
             f.setBackgroundColor(Color.parseColor("#80ff00"));
             f.setPressed(true);
-            //viewHolder.friend.setBackgroundColor(viewHolder.friend.getContext().getResources().getColor(Color.green(0x80ff00)));
+
+            // unfriend
         } else {
-            current_user.setFriend(selected_user.getuID());
-            this.friends.remove(selected_user.getuID());
+            current_user.getdFriends().remove(selected_user.getuID());
+            ///////////////
+            handleFollower(selected_user);
+            ///////////////
             Toast.makeText(getContext(), selected_user.getdName() + " removed from friends", Toast.LENGTH_LONG).show();
             f.setText("TAG AS FRIEND");
             f.setBackgroundColor(viewHolder.friend.getContext().getResources().getColor(R.color.colorAccent));
@@ -105,32 +136,35 @@ public class UsersList extends ArrayAdapter<UserProfile> {
 
     public void handleEnemyPressed(View v, UserProfile selected_user) {
         Button e = (Button) v;
-        if (!this.enemies.contains(selected_user.getuID())) {
-            this.enemies.add(selected_user.getuID());
-            current_user.setEnemy(selected_user.getuID());
+        if (!current_user.getdEnemies().containsKey(selected_user.getuID())) {
+            current_user.setEnemy(selected_user);
+            ///////////////
+            handleFollower(selected_user);
+            ///////////////
             Toast.makeText(getContext(), selected_user.getdName() + " added to enemies", Toast.LENGTH_LONG).show();
             e.setText("ENEMY");
             e.setBackgroundColor(Color.parseColor("#ff0000"));
             e.setPressed(true);
         } else {
-            current_user.setEnemy(selected_user.getuID());
-            this.enemies.remove(selected_user.getuID());
+            current_user.getdEnemies().remove(selected_user.getuID());
             Toast.makeText(getContext(), selected_user.getdName() + " removed from enemies", Toast.LENGTH_LONG).show();
             e.setText("TAG AS ENEMY");
             e.setBackgroundColor(viewHolder.enemy.getContext().getResources().getColor(R.color.colorPrimaryDark));
         }
     }
 
-    public void setLists() {
-        if (current_user.getdFriends() == null)
-            this.friends = new ArrayList<String>();
-        else
-            this.friends = this.current_user.getdFriends();
+    public void handleFollower(UserProfile selected_user) {
+        //in case lists are null objects
+        selected_user.checkLists();
+        String follower_email = current_user.getuEMail();
+        //adding current user as follower of selected_user
+        if (!selected_user.getFollowers().contains(follower_email))
+            selected_user.getFollowers().add(follower_email);
+            //removing current user from followers list of selected_user
+        else if (selected_user.getFollowers().contains(follower_email))
+            selected_user.getFollowers().remove(follower_email);
 
-        if (current_user.getdEnemies() == null)
-            this.enemies = new ArrayList<String>();
-        else
-            this.enemies = this.current_user.getdEnemies();
+
     }
 }
 

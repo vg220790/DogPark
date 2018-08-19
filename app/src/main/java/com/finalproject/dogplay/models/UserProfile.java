@@ -2,6 +2,7 @@ package com.finalproject.dogplay.models;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserProfile {
 
@@ -11,18 +12,17 @@ public class UserProfile {
 
     //user name to be displayed
     private String uName;
-
     //dog name
     private String dName;
 
     // dog descriptions: small , big, lazy, etc
     private ArrayList<String> dDescription;
-
     //list of dog friends
-    private ArrayList<String> dFriends;
-
+    private HashMap<String, UserProfile> dFriends;
     //list of dog our dog don't like
-    private ArrayList<String> dEnemies;
+    private HashMap<String, UserProfile> dEnemies;
+    //list of users who tagged me as 'friend'
+    private ArrayList<String> followers;
 
     public UserProfile() { }
 
@@ -32,74 +32,93 @@ public class UserProfile {
         checkLists();
     }
 
+    //getters
     public String getuID() {
-        return uID;
-    }
-    private void setuID(String id) {
-        this.uID = id;
+        return this.uID;
     }
     public String getuEMail() {
-        return uEMail;
+        return this.uEMail;
     }
-    public void setuEMail(String eMail) {
-        this.uEMail = eMail;
-    }
+
     public String getuPassword() {
-        return uPassword;
+        return this.uPassword;
     }
+
+    public String getuName() {
+        return this.uName;
+    }
+
+    public String getdName() {
+        return this.dName;
+    }
+
+    public ArrayList<String> getdDescription() {
+        return this.dDescription;
+    }
+
+    public HashMap<String, UserProfile> getdFriends() {
+        return this.dFriends;
+    }
+
+    public HashMap<String, UserProfile> getdEnemies() {
+        return this.dEnemies;
+    }
+
+    public ArrayList<String> getFollowers() {
+        return this.followers;
+    }
+
+    //setters
     public void setuPassword(String password) {
         this.uPassword = password;
     }
 
-    public String getuName() {
-        return uName;
+    public void setuEMail(String eMail) {
+        this.uEMail = eMail;
+    }
+
+    private void setuID(String id) {
+        this.uID = id;
     }
     public void setuName(String uName) {
         this.uName = uName;
     }
-    public String getdName() {
-        return dName;
-    }
     public void setdName(String dName) {
         this.dName = dName;
     }
-    public ArrayList<String> getdDescription() {
-        return dDescription;
-    }
+
     public void setdDescription(ArrayList<String> dDescription) {
         this.dDescription = dDescription;
-
-    }
-    public ArrayList<String> getdFriends() {
-        return dFriends;
     }
 
-    public void setDogFriendsList(ArrayList<String> dFriends) {
+    public void setDogFriendsList(HashMap<String, UserProfile> dFriends) {
         this.dFriends = dFriends;
     }
 
-    public ArrayList<String> getdEnemies() {
-        return dEnemies;
-    }
-
-    public void setDogEnemiesList(ArrayList<String> dEnemy) {
+    public void setDogEnemiesList(HashMap<String, UserProfile> dEnemy) {
         this.dEnemies = dEnemy;
     }
 
-    public void setFriend(String friend) {
-        checkLists();
-        if (this.dEnemies.contains(friend))
-            this.dEnemies.remove(friend);
-        if (!this.dFriends.contains(friend))
-            this.dFriends.add(friend);
+    public void setFollowersList(ArrayList<String> followers) {
+        this.followers = followers;
     }
 
-    public void setEnemy(String enemy) {
+    public void setFriend(UserProfile friend) {
         checkLists();
-        if (this.getdFriends().contains(enemy))
-            this.dFriends.remove(enemy);
-        if (!this.dEnemies.contains(enemy))
-            this.dEnemies.add(enemy);
+        String friend_id = friend.getuID();
+        if (this.dEnemies.containsKey(friend_id))
+            this.dEnemies.remove(friend_id);
+        if (!this.dFriends.containsKey(friend_id))
+            this.dFriends.put(friend_id, friend);
+    }
+
+    public void setEnemy(UserProfile enemy) {
+        checkLists();
+        String enemy_id = enemy.getuID();
+        if (this.dFriends.containsKey(enemy_id))
+            this.dFriends.remove(enemy_id);
+        if (!this.dEnemies.containsKey(enemy_id))
+            this.dEnemies.put(enemy_id, enemy);
     }
 
     @Override
@@ -113,9 +132,12 @@ public class UserProfile {
 
     public void checkLists() {
         if (this.dFriends == null)
-            dFriends = new ArrayList<String>();
+            this.dFriends = new HashMap<String, UserProfile>();
 
         if (this.dEnemies == null)
-            dEnemies = new ArrayList<String>();
+            this.dEnemies = new HashMap<String, UserProfile>();
+
+        if (this.followers == null)
+            this.followers = new ArrayList<String>();
     }
 }

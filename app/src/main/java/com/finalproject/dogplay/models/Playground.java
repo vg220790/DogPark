@@ -43,6 +43,8 @@ public class Playground {
     }
 
     public ArrayList<UserProfile> getUsers() {
+        if (this.users == null || this.users.contains(null))
+            this.users = new ArrayList<>();
         return this.users;
     }
 
@@ -71,13 +73,15 @@ public class Playground {
         this.users = users;
     }
 
-    public boolean hasUsers(){ return !this.users.isEmpty();}
+    public boolean hasUsers() {
+        return !this.getUsers().isEmpty();
+    }
 
 
     public String toString(){
         String toReturn = this.getAddress() + "-" + this.latitude + "-" + this.longitude;
         String usersString =  "";
-        if (!users.isEmpty()){
+        if (!this.getUsers().isEmpty()) {
             StringBuilder s = new StringBuilder();
             s.append("-[");
             s.append(usersToString(false));
@@ -88,7 +92,7 @@ public class Playground {
 
     public String usersToString(boolean detailed){
         StringBuilder userInPlaygroundString = new StringBuilder();
-        for(UserProfile user : this.users) {
+        for (UserProfile user : this.getUsers()) {
             if (detailed)
                 userInPlaygroundString.append(user.toString()).append(", ");
             else {

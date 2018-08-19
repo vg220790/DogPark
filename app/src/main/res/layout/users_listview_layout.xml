@@ -18,7 +18,7 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/user_imageview"
         android:background="@color/colorPrimary"
-        android:gravity="center_horizontal" />
+        android:gravity="center" />
 
     <Button
         android:id="@+id/friend_button"
