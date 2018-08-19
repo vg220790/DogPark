@@ -210,9 +210,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void showDogDescription(){
         //firstly getting mandatory attribute of dog's size
-        StringBuilder dogsInfo = new StringBuilder("Dogs size: " + currentUserProfile.getdDescription().get(0));
+        StringBuilder dogsInfo = new StringBuilder("Dog attributes: \n" + currentUserProfile.getdDescription().get(0));
         for (String attribute: currentUserProfile.getdDescription().subList(1,(currentUserProfile.getdDescription().size())))
-            dogsInfo.append("\n").append(attribute);
+            dogsInfo.append(",\n").append(attribute);
         this.dogInfo.setText(dogsInfo.toString());
         dog_description = currentUserProfile.getdDescription();
     }
