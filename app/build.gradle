@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        maven { url 'https://plugins.gradle.org/m2/'}
+        maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
         classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.11.0, 0.99.99]'
@@ -25,7 +25,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders = [
-                onesignal_app_id: '7817bdf4-af44-444d-a472-49c5c068b600',
+                onesignal_app_id               : '7817bdf4-af44-444d-a472-49c5c068b600',
                 // Project number pulled from dashboard, local value is ignored.
                 onesignal_google_project_number: 'REMOTE'
         ]
@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.android.support:cardview-v7:26.1.0'
 
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.google.firebase:firebase-crash:11.8.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
