@@ -87,13 +87,11 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
-        //////
         // OneSignal Initialization
         OneSignal.startInit(this)
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init();
-        //////
         handleUserLogin();
 
         ProgressBar progressBar = findViewById(R.id.progressBar);
@@ -208,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
     private void showData(){
         user_name = currentUserProfile.getuName();
         dog_name = currentUserProfile.getdName();
@@ -290,6 +287,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //sign out method
+    private void signOut() {
+        auth.signOut();
+    }
 
 
 }//end of class
