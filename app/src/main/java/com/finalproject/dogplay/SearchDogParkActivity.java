@@ -139,8 +139,8 @@ public class SearchDogParkActivity extends AppCompatActivity {
                 intent.putExtra("EXTRA_SELECTED_PLAYGROUND", (playgrounds.get(position)).getAddress());
                 intent.putExtra("EXTRA_PLAYGROUND_ID", (playgrounds.get(position)).getId());
                 startActivity(intent);
-                onDestroy();
-
+                inActivity = false;
+                finish();
             }
         });
 
