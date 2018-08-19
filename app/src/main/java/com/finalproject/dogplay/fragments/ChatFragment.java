@@ -57,6 +57,8 @@ public class ChatFragment extends Fragment {
     private String mUsername;
     private String mUserId;
 
+    private final int CHAT_TIME_OFFSET = 30*60*1000;
+
     /**
      * Create a instance of this fragment
      *
@@ -180,7 +182,7 @@ public class ChatFragment extends Fragment {
 
         for(DataSnapshot item : dataSnapshot.getChildren()) {
             ChatData data = item.getValue(ChatData.class);
-            if(currentTime <= data.getTime())
+            if(currentTime - CHAT_TIME_OFFSET <= data.getTime())
                 mAdapter.addData(data);
             else{
                 Log.d("time","time passed");
