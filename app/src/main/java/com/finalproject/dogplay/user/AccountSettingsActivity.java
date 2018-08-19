@@ -1,8 +1,10 @@
 package com.finalproject.dogplay.user;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import com.finalproject.dogplay.R;
 import com.finalproject.dogplay.models.UserProfile;
+import com.finalproject.dogplay.service.BackgroundService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,7 +79,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         changePassword      = findViewById(R.id.changePass);
         sendEmail           = findViewById(R.id.send);
         remove              = findViewById(R.id.remove);
-        Button signOut = findViewById(R.id.sign_out);
+        Button signOut      = findViewById(R.id.sign_out);
 
         oldEmail            = findViewById(R.id.old_email);
         newEmail            = findViewById(R.id.new_email);
@@ -230,38 +233,70 @@ public class AccountSettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
-                if (user != null) {
-                    user.delete()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        ///////////////////////
-                                        databaseUserProfiles.child(user.getUid()).removeValue();
-                                        //databaseUserProfiles.child("UserProfiles").child(user.getUid()).removeValue();
-                                        //////////////////
-                                        Toast.makeText(AccountSettingsActivity.this, "Your profile is deleted:( Create a account now!", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(AccountSettingsActivity.this, SignupActivity.class));
-                                        finish();
-                                        progressBar.setVisibility(View.GONE);
-                                    } else {
-                                        Toast.makeText(AccountSettingsActivity.this, "Failed to delete your account!", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                }
-                            });
-                }
+                StopGPSService();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //wait for deleting user from playground
+                        if (user != null) {
+                            user.delete()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                ///////////////////////
+                                                databaseUserProfiles.child(user.getUid()).removeValue();
+                                                //databaseUserProfiles.child("UserProfiles").child(user.getUid()).removeValue();
+                                                //////////////////
+                                                Toast.makeText(AccountSettingsActivity.this, "Your profile is deleted:( Create a account now!", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(AccountSettingsActivity.this, SignupActivity.class));
+                                                finish();
+                                                progressBar.setVisibility(View.GONE);
+                                            } else {
+                                                Toast.makeText(AccountSettingsActivity.this, "Failed to delete your account!", Toast.LENGTH_SHORT).show();
+                                                progressBar.setVisibility(View.GONE);
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                }, 2500);
+
             }
         });
 
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signOut();
+                StopGPSService();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //wait for deleting user from playground
+                        signOut();
+                    }
+                }, 2500);
+
             }
         });
 
     }//end of onCreate
+    private void StopGPSService(){
+        /*stop gps service*/
+        if(isRunningService("com.finalproject.dogplay.service.BackgroundService")) {
+            Intent i =new Intent(getApplicationContext(),BackgroundService.class);
+            stopService(i);
+        }
+    }
+
+    private boolean isRunningService(String serviceName){
+        ActivityManager manager = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
+        for(ActivityManager.RunningServiceInfo service : Objects.requireNonNull(manager).getRunningServices(Integer.MAX_VALUE)){
+            if(serviceName.equals(service.service.getClassName()))
+                return true;
+        }
+        return false;
+    }
 
     private void getCurrentUserProfile(FirebaseUser user){
         final String current_userID = user.getUid();
