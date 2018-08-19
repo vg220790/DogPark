@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         dogInfo                 = findViewById(R.id.dogInfo);
         Switch toggleGPS        = findViewById(R.id.gps_service);
 
-        //StartGPSService();
 
         toggleGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -231,12 +230,13 @@ public class MainActivity extends AppCompatActivity {
         this.dogInfo.setText(dogsInfo.toString());
         dog_description = currentUserProfile.getdDescription();
     }
-
+    //TODO delete
+    /*
     //sign out method
     public void signOut() {
         auth.signOut();
     }
-
+    */
     private void StartGPSService(){
         /*start gps service*/
         if(!isRunningService("com.finalproject.dogplay.service.BackgroundService")) {
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void StopGPSService(){
-        /*start gps service*/
+        /*stop gps service*/
         if(isRunningService("com.finalproject.dogplay.service.BackgroundService")) {
             Intent i =new Intent(getApplicationContext(),BackgroundService.class);
             stopService(i);
@@ -295,10 +295,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    //TODO delete
 
     public UserProfile getCurrentUserProfile(){
         return currentUserProfile;
     }
+    //TODO delete
 
     public static void sendNotification(final String follower_email) {
         AsyncTask.execute(new Runnable() {
