@@ -64,13 +64,12 @@ public class BackgroundService extends Service {
 
         //background service will not work (app will crash) if firebase user logged out
         loadUser();
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 initializeLocationManager();
             }
-        }, 200);
+        }, 2500);
 
 
     }
@@ -95,6 +94,7 @@ public class BackgroundService extends Service {
 
             }
         });
+
     }
 
     private Location getLocation(){
@@ -271,8 +271,8 @@ public class BackgroundService extends Service {
     }
 
     private void mangeUserInRange(String playgroundID, String playgroundName, String mUserId) {
+
         playgrounds.child(playgroundID).child("visitors").push().child("userProfile").setValue(myUserProfile);
-        //playgrounds.child(playgroundID).child("visitors").child(mUserId).setValue(myUserProfile);
         //send notification to all the followers
         notifyAllFollowers(playgroundName);
     }

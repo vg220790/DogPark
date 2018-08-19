@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 //wait for user info
             }
-        }, 400);
+        }, 1000);
     }
 
 
