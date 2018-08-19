@@ -139,6 +139,7 @@ public class BackgroundService extends Service {
     public void onDestroy() {
 
         this.isRunning = false;
+        mangeUsers(0,0);
         if (mLocationManager != null) {
             for (LocationListener mLocationListener : mLocationListeners) {
                 try {

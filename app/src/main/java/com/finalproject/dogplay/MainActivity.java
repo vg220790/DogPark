@@ -21,7 +21,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.ActivityManager;
@@ -101,8 +103,21 @@ public class MainActivity extends AppCompatActivity {
         username                = findViewById(R.id.username);
         dogName                 = findViewById(R.id.dogname);
         dogInfo                 = findViewById(R.id.dogInfo);
+        Switch toggleGPS        = findViewById(R.id.gps_service);
 
-        GPSService();
+        //StartGPSService();
+
+        toggleGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked)
+                    StartGPSService();
+                else
+                    StopGPSService();
+
+
+            }
+        });
 
         userDataBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,18 +237,26 @@ public class MainActivity extends AppCompatActivity {
         auth.signOut();
     }
 
-    private void GPSService(){
+    private void StartGPSService(){
         /*start gps service*/
         if(!isRunningService("com.finalproject.dogplay.service.BackgroundService")) {
             if(!runtime_permissions()){
                 Intent i =new Intent(getApplicationContext(),BackgroundService.class);
                 startService(i);
-                Toast.makeText(MainActivity.this, "service started!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "GPS tracking service started!", Toast.LENGTH_SHORT).show();
             }
-        }else{
-            Toast.makeText(MainActivity.this, "service has already started!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void StopGPSService(){
+        /*start gps service*/
+        if(isRunningService("com.finalproject.dogplay.service.BackgroundService")) {
+            Intent i =new Intent(getApplicationContext(),BackgroundService.class);
+            stopService(i);
+            Toast.makeText(MainActivity.this, "GPS tracking service has Stopped!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     /**
      * Method the checks if service is running
      * @param serviceName String representing the service name

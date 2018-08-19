@@ -79,6 +79,12 @@ public class SearchDogParkActivity extends AppCompatActivity {
 
     }// end of onCreate
 
+    @Override
+    protected void onDestroy() {
+        inActivity = false;
+        finish();
+        super.onDestroy();
+    }
 
     private String stringForMap(Playground playground){
         return playground.getAddress() + "### " +  playground.getLatitude() + "### "
@@ -133,8 +139,7 @@ public class SearchDogParkActivity extends AppCompatActivity {
                 intent.putExtra("EXTRA_SELECTED_PLAYGROUND", (playgrounds.get(position)).getAddress());
                 intent.putExtra("EXTRA_PLAYGROUND_ID", (playgrounds.get(position)).getId());
                 startActivity(intent);
-                inActivity = false;
-                finish();
+                onDestroy();
 
             }
         });
