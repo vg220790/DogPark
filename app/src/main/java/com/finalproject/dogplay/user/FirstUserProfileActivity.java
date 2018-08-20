@@ -240,7 +240,7 @@ public class FirstUserProfileActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Task<Uri> downloadUri = taskSnapshot.getMetadata().getReference().getDownloadUrl();
 
-                    
+
                     //Uri downloadUri = taskSnapshot.getDownloadUri();
                     user = FirebaseAuth.getInstance().getCurrentUser();
                     databaseUserProfiles.child(user.getUid()).child("photo_url").setValue(downloadUri.toString());
