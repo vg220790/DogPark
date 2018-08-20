@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -40,6 +41,8 @@ public class UserProfileActivity extends AppCompatActivity {
     private EditText uNameET, dNameET;
     private RadioGroup dSizeRG;
     private CheckBox friendlyCB, playfulCB, goodWithPeopleCB;
+    private ImageView photo;
+    private Button confirmButton, upload_image, save_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,10 @@ public class UserProfileActivity extends AppCompatActivity {
         friendlyCB              = findViewById(R.id.isFriendly);
         playfulCB               = findViewById(R.id.isPlayful);
         goodWithPeopleCB        = findViewById(R.id.isGoodWithPeople);
-        Button confirmButton = findViewById(R.id.filledUserData);
+        confirmButton = findViewById(R.id.filledUserData);
+        photo = findViewById(R.id.user_imageview);
+        upload_image = findViewById(R.id.upload_image_button);
+        save_image = findViewById(R.id.save_image_button);
 
         Bundle extras = getIntent().getExtras();
         userName = Objects.requireNonNull(extras).getString("EXTRA_USERNAME");
@@ -94,6 +100,20 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
                 //check if new user make new data
                 updateUserData(username, dogname, dSizeRG, friendlyCB, playfulCB, goodWithPeopleCB);
+
+            }
+        });
+
+        upload_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        save_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
             }
         });

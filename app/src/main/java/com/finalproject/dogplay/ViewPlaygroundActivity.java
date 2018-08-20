@@ -136,33 +136,4 @@ public class ViewPlaygroundActivity extends AppCompatActivity implements Activit
     }
 }
 
-/* old way******/
-/*
-        DatabaseReference databasePlaygrounds = FirebaseDatabase.getInstance().getReference("Playgrounds");
-
-        databasePlaygrounds.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot playgroundSnapshot : dataSnapshot.getChildren()) {
-                    Playground playground = playgroundSnapshot.getValue(Playground.class);
-                    if (Objects.requireNonNull(playgroundSnapshot.child("address").getValue()).equals(playgroundName)) {
-                        userProfiles = new ArrayList();
-                        for (DataSnapshot dataSnapshot1 : playgroundSnapshot.child("visitors").getChildren())
-                            userProfiles.add(dataSnapshot1.child("userProfile").getValue(UserProfile.class));
-                        playground.setUsers(userProfiles);
-                        Log.d("visit", userProfiles.toString());
-                        usersList.addAll(userProfiles);
-                    }
-                }
-                setUsersListView(usersList);
-            }
-
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-*/
-
 

@@ -9,6 +9,7 @@ public class UserProfile {
     private String uID;
     private String uEMail;
     private String uPassword;
+    private String photo_url;
 
     //user name to be displayed
     private String uName;
@@ -38,6 +39,10 @@ public class UserProfile {
     }
     public String getuEMail() {
         return this.uEMail;
+    }
+
+    public String getPhoto_url() {
+        return photo_url;
     }
 
     public String getuPassword() {
@@ -82,6 +87,10 @@ public class UserProfile {
     }
     public void setuName(String uName) {
         this.uName = uName;
+    }
+
+    public void setPhoto_url(String photo_url) {
+        this.photo_url = photo_url;
     }
     public void setdName(String dName) {
         this.dName = dName;

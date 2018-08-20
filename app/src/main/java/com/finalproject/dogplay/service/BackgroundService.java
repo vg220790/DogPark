@@ -323,7 +323,7 @@ public class BackgroundService extends Service {
                                 + "\"filters\": [{\"field\": \"tag\", \"key\": \"user_email\", \"relation\": \"=\", \"value\": \"" + follower_email + "\"}],"
 
                                 + "\"data\": {\"foo\": \"bar\"},"
-                                + "\"contents\": {\"en\": \"Your friend" + myUserProfile.getuName() + "just entered " + playgroundName + "\"}"
+                                + "\"contents\": {\"en\": \"Your friend " + myUserProfile.getuName() + " just entered " + playgroundName + "\"}"
                                 + "}";
 
 

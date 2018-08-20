@@ -23,15 +23,63 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="30dp"
+            android:textColor="@color/colorAccent"
+            android:gravity="center"
+            android:textSize="25dp"
             android:text="@string/user_data" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/upload_image_button"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:textSize="12dp"
+                android:textColor="@color/colorAccent"
+                android:background="@null"
+                android:text="upload profile picture" />
+
+            <ImageView
+                android:id="@+id/user_imageview"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:src="@mipmap/dog_play_icon" />
+
+            <Button
+                android:id="@+id/save_image_button"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="14dp"
+                android:textSize="12dp"
+                android:textColor="@color/colorAccent"
+                android:background="@null"
+                android:text="save uploaded image" />
+
+        </LinearLayout>
+
 
         <EditText
             android:id="@+id/uName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:layout_marginTop="20dp"
             android:inputType="textPersonName"
-            android:text="@string/user_name" />
+            android:hint="@string/user_name"
+            android:textColor="@color/colorAccent" />
 
         <EditText
             android:id="@+id/dName"
@@ -39,67 +87,86 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="@string/dog_name" />
+            android:hint="@string/dog_name"
+            android:textColor="@color/colorAccent" />
 
-
-        <RadioGroup
-            android:id="@+id/size"
-            android:layout_width="119dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checkedButton="@+id/medium">
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp">
 
-            <TextView
-                android:id="@+id/textView4"
+            <RadioGroup
+                android:id="@+id/size"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center_horizontal"
+                android:checkedButton="@+id/medium">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorAccent"
+                    android:text="@string/dog_size" />
+
+                <RadioButton
+                    android:id="@+id/small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/small" />
+
+                <RadioButton
+                    android:id="@+id/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/medium" />
+
+                <RadioButton
+                    android:id="@+id/big"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/big" />
+            </RadioGroup>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/dog_size" />
+                android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/small" />
+                <TextView
+                    android:id="@+id/dogInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"
+                    android:text="@string/attributes" />
 
-            <RadioButton
-                android:id="@+id/medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/medium" />
+                <CheckBox
+                    android:id="@+id/isFriendly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/friendly" />
 
-            <RadioButton
-                android:id="@+id/big"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/big" />
-        </RadioGroup>
+                <CheckBox
+                    android:id="@+id/isPlayful"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/playful" />
 
-        <TextView
-            android:id="@+id/dogInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/attributes" />
+                <CheckBox
+                    android:id="@+id/isGoodWithPeople"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gWithPeople" />
 
-        <CheckBox
-            android:id="@+id/isFriendly"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/friendly" />
+            </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/isPlayful"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/playful" />
-
-        <CheckBox
-            android:id="@+id/isGoodWithPeople"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/gWithPeople" />
+        </LinearLayout>
 
 
     </LinearLayout>

@@ -322,6 +322,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
     //sign out method
     private void signOut() {
         auth.signOut();
+        finish();
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
     }
 
     @Override
