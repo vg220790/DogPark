@@ -45,7 +45,12 @@ public class BackgroundService extends Service {
     private double lon;
 
     private LocationManager mLocationManager = null;
+    //this is the time interval we used every ten seconds
+    //for  testing purposes we made it to be every 10 seconds
+    // this is supposed to be every 5 minutes 5*60*1000
     private static final int LOCATION_INTERVAL = 10*1000;
+    //this is the distance interval we used for testing
+    //this is supposed to be every 15 meters
     private static final float LOCATION_DISTANCE = 0;
     private LocationListener[] mLocationListeners = new LocationListener[] {
             new LocationListener(LocationManager.GPS_PROVIDER),
