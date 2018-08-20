@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -27,10 +28,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.finalproject.dogplay.MainActivity;
-import com.finalproject.dogplay.Manifest;
 import com.finalproject.dogplay.R;
 import com.finalproject.dogplay.models.UserProfile;
 import com.firebase.client.Firebase;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,6 +56,7 @@ public class FirstUserProfileActivity extends AppCompatActivity {
     private DatabaseReference databaseUserProfiles;
     private StorageReference storageReference;
     private FirebaseAuth auth;
+    private Uri downloadUri;
     private Intent intentToMain;
 
     private FirebaseUser user;
@@ -63,7 +66,7 @@ public class FirstUserProfileActivity extends AppCompatActivity {
     RadioGroup dSizeRG;
     CheckBox friendlyCB, playfulCB, goodWithPeopleCB;
     ImageView photo;
-    Button upload_image, save_image, confirmButton;
+    Button upload_image, confirmButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +80,7 @@ public class FirstUserProfileActivity extends AppCompatActivity {
         databaseUserProfiles = FirebaseDatabase.getInstance().getReference("UserProfiles");
         progressDialog = new ProgressDialog(FirstUserProfileActivity.this);
         storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://dogplay-2564a.appspot.com/");
-        final FirebaseUser u = auth.getCurrentUser();
+
 
 
         uNameET = findViewById(R.id.uName);
@@ -88,7 +91,6 @@ public class FirstUserProfileActivity extends AppCompatActivity {
         goodWithPeopleCB = findViewById(R.id.isGoodWithPeople);
         photo = findViewById(R.id.user_imageview);
         upload_image = findViewById(R.id.upload_image_button);
-        save_image = findViewById(R.id.save_image_button);
         confirmButton = findViewById(R.id.filledUserData);
 
 
@@ -142,12 +144,6 @@ public class FirstUserProfileActivity extends AppCompatActivity {
             }
         });
 
-        save_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
     }// end of on create
 
@@ -161,6 +157,7 @@ public class FirstUserProfileActivity extends AppCompatActivity {
 
         UserProfile newUserProfile = new UserProfile(current_userID, email);
 
+        newUserProfile.setPhoto_url(downloadUri.toString());
         newUserProfile.setuName(uName);
         newUserProfile.setdName(dName);
 
@@ -231,20 +228,48 @@ public class FirstUserProfileActivity extends AppCompatActivity {
         if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
             image_uri = data.getData();
             photo.setImageURI(image_uri);
-            StorageReference filePath = storageReference.child("ProfilePictures").child(image_uri.getLastPathSegment());
+            final StorageReference filePath = storageReference.child("ProfilePictures").child(image_uri.getLastPathSegment());
             progressDialog.setMessage("Uploading Image...");
             progressDialog.show();
 
-            filePath.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            final Task uploadTask = filePath.putFile(image_uri);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Task<Uri> downloadUri = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+
+                    //we need this method to properly get selected image url
+                    ///////////////////////////////////
+                    Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+
+                            // Continue with the task to get the download URL
+                            return filePath.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                downloadUri = task.getResult();
+                            } else {
+                                // Handle failures
+                                // ...
+                            }
+                        }
+                    });
+                    ///////////////////////////////////
 
 
-                    //Uri downloadUri = taskSnapshot.getDownloadUri();
-                    user = FirebaseAuth.getInstance().getCurrentUser();
-                    databaseUserProfiles.child(user.getUid()).child("photo_url").setValue(downloadUri.toString());
-
+                    //adding delay
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    }, 2000);
 
                     Glide.with(getApplicationContext())
                             .load(downloadUri)
@@ -253,7 +278,7 @@ public class FirstUserProfileActivity extends AppCompatActivity {
                                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE))
                             .into(photo);
 
-                    Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "image uploaded", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 }
 

@@ -123,7 +123,9 @@ public class MainActivity extends AppCompatActivity {
                 Bundle extras = new Bundle();
                 extras.putString("EXTRA_USERNAME",currentUserProfile.getuName());
                 extras.putString("EXTRA_DOGNAME",currentUserProfile.getdName());
+                extras.putString("EXTRA_URL", currentUserProfile.getPhoto_url());
                 extras.putStringArrayList("EXTRA_DOGATTRIBUTES",currentUserProfile.getdDescription());
+
                 userProfileIntent.putExtras(extras);
                 startActivity(userProfileIntent);
 

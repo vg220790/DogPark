@@ -2,6 +2,8 @@ package com.finalproject.dogplay.adapters;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.net.Uri;
+import android.service.notification.ConditionProviderService;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.finalproject.dogplay.MainActivity;
 import com.finalproject.dogplay.R;
 import com.finalproject.dogplay.models.UserProfile;
@@ -65,6 +70,22 @@ public class UsersList extends ArrayAdapter<UserProfile> {
                 viewHolder.userInfo.setBackgroundColor(Color.parseColor("#ff0000"));
             viewHolder.userInfo.setText(selected_user.toString());
 
+                ///////////////////////////////////////////////////
+                //getting image url from firebase
+                String photo_url = selected_user.getPhoto_url();
+                Uri uri = null;
+                if (photo_url != null) {
+                    uri = Uri.parse(photo_url);
+                }
+
+                viewHolder.photo.setImageURI(uri);
+                Glide.with(CONTEXT)
+                        .load(uri)
+                        .apply(new RequestOptions()
+                                .placeholder(R.mipmap.dog_play_icon)
+                                .diskCacheStrategy(DiskCacheStrategy.RESOURCE))
+                        .into(viewHolder.photo);
+                ///////////////////////////////////////////////////
 
                 if (current_user.getuID().equals(selected_user.getuID())) {
                     viewHolder.friend.setVisibility(View.GONE);

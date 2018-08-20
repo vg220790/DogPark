@@ -171,8 +171,6 @@ public class ChatFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e(TAG,"ERROR: " + databaseError.getMessage());
-                Toast.makeText(getContext(), "chat_init_error", Toast.LENGTH_SHORT).show();
-
             }
         });
     }

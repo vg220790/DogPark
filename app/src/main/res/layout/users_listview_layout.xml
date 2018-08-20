@@ -6,24 +6,24 @@
 
     <ImageView
         android:id="@+id/user_imageview"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:background="@color/colorAccent"
         android:src="@mipmap/ic_launcher_round" />
 
     <TextView
         android:id="@+id/userprofile_textview"
-        android:layout_width="260dp"
-        android:layout_height="50dp"
+        android:layout_width="250dp"
+        android:layout_height="70dp"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/user_imageview"
         android:background="@color/colorPrimary"
-        android:gravity="center" />
+        android:gravity="left" />
 
     <Button
         android:id="@+id/friend_button"
-        android:layout_width="61dp"
-        android:layout_height="50dp"
+        android:layout_width="51dp"
+        android:layout_height="70dp"
         android:layout_alignEnd="@+id/userprofile_textview"
         android:layout_alignParentTop="true"
         android:layout_marginEnd="-11dp"
@@ -34,7 +34,7 @@
     <Button
         android:id="@+id/enemy_button"
         android:layout_width="51dp"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="12dp"

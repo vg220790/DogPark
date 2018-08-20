@@ -1,6 +1,8 @@
 package com.finalproject.dogplay.models;
 
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

@@ -210,7 +210,7 @@ public class BackgroundService extends Service {
 
     private boolean inRange(double pLat, double pLon, double myLat, double myLon){
 
-        return (haversine(pLat, pLon, myLat, myLon) * 1000) <= 35;
+        return (haversine(pLat, pLon, myLat, myLon) * 1000) <= 200;
 
     }
 

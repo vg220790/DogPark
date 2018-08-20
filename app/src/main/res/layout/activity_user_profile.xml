@@ -56,18 +56,6 @@
                 android:layout_marginRight="14dp"
                 android:src="@mipmap/dog_play_icon" />
 
-            <Button
-                android:id="@+id/save_image_button"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="14dp"
-                android:textSize="12dp"
-                android:textColor="@color/colorAccent"
-                android:background="@null"
-                android:text="save uploaded image" />
-
         </LinearLayout>
 
         <EditText

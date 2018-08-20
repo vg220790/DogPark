@@ -5,6 +5,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ViewHolder {
+
+    ViewHolder() {
+    }
+
     ImageView photo;
     TextView userInfo;
     Button friend, enemy;
