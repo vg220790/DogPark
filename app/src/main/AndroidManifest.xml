@@ -50,6 +50,9 @@
             android:enabled="true"
             android:exported="true" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="7b59deaebe7e0dbd4936a933ac9c51e607dc3cb8" />
     </application>
 
 </manifest>
