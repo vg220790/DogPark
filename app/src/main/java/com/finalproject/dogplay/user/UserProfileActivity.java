@@ -173,7 +173,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         currentUserProfile = userProfile;
                         currentUserProfile.setuName(username);
                         currentUserProfile.setdName(dogname);
-                        currentUserProfile.setPhoto_url(downloadUri.toString());
+                        currentUserProfile.setPhoto_url(photo_url);
                         currentUserProfile.setdDescription(dogDescription(dSizeRG, friendlyCB, playfulCB, goodWithPeopleCB));
                         databaseUserProfiles.child(currentUserProfile.getuID()).setValue(currentUserProfile);
                         Toast.makeText(getApplicationContext(), R.string.registration_complete, Toast.LENGTH_LONG).show();
@@ -297,6 +297,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Uri> task) {
                             if (task.isSuccessful()) {
                                 downloadUri = task.getResult();
+                                photo_url = downloadUri.toString();
                             } else {
                                 // Handle failures
                                 // ...
@@ -312,6 +313,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         public void run() {
                         }
                     }, 2000);
+
 
                     Glide.with(getApplicationContext())
                             .load(downloadUri)
